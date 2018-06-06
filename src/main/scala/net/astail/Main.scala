@@ -7,8 +7,18 @@ import org.json4s.jackson.JsonMethods._
 
 object Main {
   def main(args: Array[String]): Unit = {
-    //val api = "https://spla2.yuu26.com/regular/now"
-    val api = "https://astail.net/ika.html"
+    ArgumentsParser.parse(args, Arguments()).foreach { a =>
+      val time = a.time
+      val rule = a.rule
+
+      val api = s"https://spla2.yuu26.com/${rule}/${time}"
+      //val api = "https://astail.net/ika.html"
+      println(s"rule: ${rule}, time: ${time}")
+      getMaps(api)
+    }
+  }
+
+  def getMaps(api: String) = {
     val source = Source.fromURL(api, "utf-8")
     val str = source.getLines.mkString
     val jsonObj = parse(str)
