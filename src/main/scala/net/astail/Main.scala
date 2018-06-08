@@ -12,8 +12,18 @@ object Main {
       val rule = a.rule
 
       val api = s"https://spla2.yuu26.com/${rule}/${time}"
-      //val api = "https://astail.net/ika.html"
-      println(s"rule: ${rule}, time: ${time}")
+
+      val rule2: String = rule match {
+        case "regular" => "レギュラー"
+        case "gachi" => "ガチ"
+        case "league" => "リーグ"
+      }
+      val time2: String = time match {
+        case "now" => "今"
+        case "next" => "次回"
+      }
+
+      println(s"ルール: ${rule2}, 時間: ${time2}")
       getMaps(api)
     }
   }
