@@ -3,16 +3,16 @@ package net.astail
 import scopt.OptionParser
 
 case class Arguments(
-    rule: String = "regular",
-    time: String = "now")
+  battle: String = "regular",
+  time: String = "now")
 
 object ArgumentsParser extends OptionParser[Arguments]("ika") {
   override val showUsageOnError = true
 
-  opt[String]('r',"rule") valueName ("<rule>") action { (arg, obj) =>
+  opt[String]('b',"battle") valueName ("<rubattlele>") action { (arg, obj) =>
     val os = parseRule(arg)
-    if (os.isEmpty) throw new Exception("invalid arg 'rule'")
-    obj.copy(rule = os.get)
+    if (os.isEmpty) throw new Exception("invalid arg 'battle'")
+    obj.copy(battle = os.get)
   } text ("デフォルトはregularです。 regular | gachi | league")
 
   opt[String]('t', "time") valueName ("<time>") action { (arg, obj) =>
