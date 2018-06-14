@@ -9,7 +9,7 @@ case class Arguments(
 object ArgumentsParser extends OptionParser[Arguments]("ika") {
   override val showUsageOnError = true
 
-  opt[String]('b',"battle") valueName ("<rubattlele>") action { (arg, obj) =>
+  opt[String]('b',"battle") valueName ("<battle>") action { (arg, obj) =>
     val os = parseRule(arg)
     if (os.isEmpty) throw new Exception("invalid arg 'battle'")
     obj.copy(battle = os.get)

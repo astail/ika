@@ -23,46 +23,25 @@ object Main {
         case "next" => "次回"
       }
 
-      val ggetMaps = getMaps(api)
-      val ggetRule = getRule(api)
+      val resultData1 = resultData(api)
 
-      println(s"バトル: ${battle2}, 時間: ${time2}, ルール: ${ggetRule}, マップ: ${ggetMaps}")
+      def map: String = resultData1.maps.mkString(",")
+      def rule: String = resultData1.rule_ex.name
+
+      println(s"バトル: ${battle2}, 時間: ${time2}, ルール: ${rule}, マップ: ${map}")
 
     }
   }
 
-  def getMaps(api: String): String = {
-    val source = Source.fromURL(api, "utf-8")
-    val str = source.getLines.mkString
-    val jsonObj = parse(str)
-    try {
-      implicit val formats = DefaultFormats
-      case class Maps_ex(id: Int, name: String, statink: String)
-      case class Rule_ex(key: String, name: String, statink: String)
-      case class Result(rule: String, rule_ex: Rule_ex, maps: List[String], maps_ex: List[Maps_ex],
-        start: String, start_utc: String, start_t: Int, end: String, end_utc: String, end_t: Int)
-
-      val listResult = (jsonObj \ "result").extract[List[Result]]
-      listResult(0).maps.mkString(",")
-    } finally {
-      source.close
-    }
-  }
-
-  def getRule(api: String): String = {
+  def resultData(api: String): Result = {
     val source = Source.fromURL(api, "utf-8")
     val str = source.getLines.mkString
     val jsonObj = parse(str)
 
     try {
       implicit val formats = DefaultFormats
-      case class Maps_ex(id: Int, name: String, statink: String)
-      case class Rule_ex(key: String, name: String, statink: String)
-      case class Result(rule: String, rule_ex: Rule_ex, maps: List[String], maps_ex: List[Maps_ex],
-        start: String, start_utc: String, start_t: Int, end: String, end_utc: String, end_t: Int)
-
       val listResult = (jsonObj \ "result").extract[List[Result]]
-      listResult(0).rule_ex.name
+      listResult(0)
     } finally {
       source.close
     }
