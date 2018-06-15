@@ -29,14 +29,14 @@ object Main {
 
 
       battle match {
-        case "coop" => coop(api)
+        case "coop" => coop(api, time)
         case _ => nomal(api, battle2, time2)
       }
     }
 
 
-    def coop(api: String) = {
-      val resultDataCoop1 = resultDataCoop(api)
+    def coop(api: String, time: String) = {
+      val resultDataCoop1 = resultDataCoop(api, time)
 
       def stage: String = resultDataCoop1.stage.name
 
@@ -61,7 +61,7 @@ object Main {
     }
 
 
-    def resultDataCoop(api: String): ResultCoop = {
+    def resultDataCoop(api: String, time: String): ResultCoop = {
       val source = Source.fromURL(api, "utf-8")
       val str = source.getLines.mkString
       val jsonObj = parse(str)
@@ -69,7 +69,12 @@ object Main {
       try {
         implicit val formats = DefaultFormats
         val listResult = (jsonObj \ "result").extract[List[ResultCoop]]
-        listResult(0)
+
+        time match {
+          case "now" => listResult(0)
+          case "next" => listResult(1)
+          case _ => listResult(0)
+        }
       } finally {
         source.close
       }
