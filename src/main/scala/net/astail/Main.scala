@@ -15,7 +15,7 @@ object Main {
       val battle = a.battle
 
       val api = battle match {
-        case "coop" => "https://spla2.yuu26.com/coop/schedule"
+        case "coop"| "coop_weapons_images" => "https://spla2.yuu26.com/coop/schedule"
         case _ => s"https://spla2.yuu26.com/${battle}/${time}"
       }
 
@@ -24,15 +24,19 @@ object Main {
         case "gachi" => "ガチ"
         case "league" => "リーグ"
         case "coop" => "バイト"
+        case "coop_weapons_images" => "バイト武器"
+        case _ => "error"
       }
       val time2: String = time match {
         case "now" => "今"
         case "next" => "次回"
+        case _ => "error"
       }
 
 
       battle match {
         case "coop" => coop(api, time)
+        case "coop_weapons_images" => coop_weapons_images(api, time)
         case _ => nomal(api, battle2, time2)
       }
     }
@@ -59,7 +63,6 @@ object Main {
 
       def stage: String = resultDataCoop1.stage.name
       def weapons = resultDataCoop1.weapons.map(_.name).mkString(",")
-      def image = resultDataCoop1.weapons.map(_.image).mkString("\n")
       def sTime = resultDataCoop1.start
       def eTime = resultDataCoop1.end
 
@@ -68,7 +71,13 @@ object Main {
       else
         "シフトを確認してくれたまえ"
 
-      println(s"${kuma}\n時間: ${sTime} ~ ${eTime}\nステージ: ${stage}\n武器: ${weapons}\n${image}")
+      println(s"${kuma}\n時間: ${sTime} ~ ${eTime}\nステージ: ${stage}\n武器: ${weapons}")
+    }
+
+    def coop_weapons_images(api: String, time: String) = {
+      val resultDataCoop1 = resultDataCoop(api, time)
+      def image = resultDataCoop1.weapons.map(_.image).mkString("\n")
+      println(s"${image}")
     }
 
 

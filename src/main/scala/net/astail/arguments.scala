@@ -11,7 +11,7 @@ object ArgumentsParser extends OptionParser[Arguments]("ika") {
     val os = parseRule(arg)
     if (os.isEmpty) throw new Exception("invalid arg 'battle'")
     obj.copy(battle = os.get)
-  } text ("デフォルトはregularです。 regular | gachi | league | coop")
+  } text ("デフォルトはregularです。 regular | gachi | league | coop | coop_weapons_images")
 
   opt[String]('t', "time") valueName ("<time>") action { (arg, obj) =>
     val os = parseTime(arg)
@@ -23,7 +23,7 @@ object ArgumentsParser extends OptionParser[Arguments]("ika") {
 
   def parseRule(s: String): Option[String] = {
     s match {
-      case "regular"|"gachi"|"league"|"coop" => Some(s)
+      case "regular"|"gachi"|"league"|"coop"|"coop_weapons_images" => Some(s)
       case _ => None
     }
   }
