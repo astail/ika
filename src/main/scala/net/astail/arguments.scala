@@ -2,9 +2,7 @@ package net.astail
 
 import scopt.OptionParser
 
-case class Arguments(
-  battle: String = "regular",
-  time: String = "now")
+case class Arguments(battle: String = "regular", time: String = "now")
 
 object ArgumentsParser extends OptionParser[Arguments]("ika") {
   override val showUsageOnError = true
