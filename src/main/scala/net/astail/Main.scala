@@ -84,12 +84,12 @@ object Main {
       (s"${kuma}\n時間: ${sTime} ~ ${eTime}\nステージ: ${stage}\n武器: ${weapons}")
     }
 
-    def coop_weapons_images(api: String, time: String) = {
+    def coop_weapons_images(api: String, time: String): String = {
       val resultDataCoop1 = resultDataCoop(api, time)
 
       def image = resultDataCoop1.weapons.map(_.image).mkString("\n")
 
-      println(s"${image}")
+      (s"${image}")
     }
 
 
