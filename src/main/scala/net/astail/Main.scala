@@ -15,6 +15,9 @@ import net.dv8tion.jda.core.exceptions.RateLimitedException
 import net.dv8tion.jda.core.hooks.EventListener
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent
 import net.dv8tion.jda.core.hooks.ListenerAdapter
+import net.dv8tion.jda.core.OnlineStatus
+import net.dv8tion.jda.core.entities.Game
+import net.dv8tion.jda.core.entities.Game.GameType
 
 
 object Main {
@@ -59,7 +62,6 @@ object Main {
           case _ => None
         }
 
-
         kekka match {
           case Some(x) => event.getTextChannel.sendMessage(x).queue
           case _ => None
@@ -67,14 +69,27 @@ object Main {
       }
     }
 
+    def setGame = {
+      @throws[LoginException]
+      @throws[RateLimitedException]
+      @throws[InterruptedException]
+      val jda: JDA = new JDABuilder(AccountType.BOT).setToken(token).addEventListener(new setGame).buildBlocking
+    }
+
+    class setGame extends EventListener {
+      def onEvent(event: Event): Unit = {
+        if (event.isInstanceOf[ReadyEvent])
+          event.getJDA.getPresence.setGame(Game.of(GameType.DEFAULT,"aaaa"))
+      }
+    }
 
     ReadyListener
     MessageListener
+    setGame
   }
 
 
   def ika(battle: String, time: String): Option[String] = {
-
 
     val api = battle match {
       case "coop" | "coop_weapons_images" => "https://spla2.yuu26.com/coop/schedule"
