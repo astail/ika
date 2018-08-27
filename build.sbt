@@ -15,3 +15,5 @@ libraryDependencies ++= Seq(
   "org.json4s" %% "json4s-jackson" % "3.6.0-M3",
   "net.dv8tion" % "JDA" % "3.7.1_392"
 )
+
+enablePlugins(JavaAppPackaging)
