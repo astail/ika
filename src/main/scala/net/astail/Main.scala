@@ -49,16 +49,27 @@ object Main {
 
     class MessageListener extends ListenerAdapter {
       override def onMessageReceived(event: MessageReceivedEvent): Unit = {
-        val strCheck = event.getMessage.getContentDisplay contains ("今のバイト")
-        val baito: Option[(String, String)] = strCheck match {
-          case true => Some(("coop"), ("now"))
-          case false => None
+
+        val checkTime: Option[String] = event.getMessage.getContentDisplay match {
+          case e if e contains "今" => Some("now")
+          case e if e contains "次" => Some("next")
+          case _ => None
         }
 
-        val kekka: Option[String] = baito match {
-          case Some(x) =>
-            val (battle, time) = baito.get
-            ika(battle, time)
+        val checkBattle: Option[String] = event.getMessage.getContentDisplay match {
+          case e if e contains "レギュラー" => Some("regular")
+          case e if e contains "ガチ" => Some("gachi")
+          case e if e contains "リーグ" => Some("league")
+          case e if e contains "バイト" => Some("coop")
+          case e if e contains "バイト武器" => Some("coop_weapons_images")
+          case _ => None
+        }
+
+        val strCheck = checkTime.flatMap(ti => checkBattle.map(ba => (ba,ti)) )
+
+        val kekka: Option[String] = strCheck match {
+          case Some(x) => val (battle, time) = strCheck.get
+            ika(battle,time)
           case _ => None
         }
 
@@ -107,7 +118,7 @@ object Main {
 
     val time2 = time match {
       case "now" => "今"
-      case "next" => "次回"
+      case "next" => "次"
       case _ => "error"
     }
 
