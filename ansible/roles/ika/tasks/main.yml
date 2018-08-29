@@ -1,0 +1,85 @@
+---
+
+#- name: install
+#  yum:
+#    name: "{{ item }}"
+#  with_items:
+#    - java
+#    - unzip
+
+- name: mkdir ika
+  file:
+    path: "{{ item }}/ika"
+    owner: astel
+    group: astel
+    state: directory
+  with_items:
+    - /opt
+    - /etc
+    - /var/log
+    - /var/run
+
+- name: copy /etc/tmpfiles.d/ika.conf
+  copy:
+    src: tmpfiles_d_ika.conf
+    dest: /etc/tmpfiles.d/ika.conf
+
+- name: copy /etc/systemd/system/ika
+  copy:
+    src: ika.service
+    dest: /etc/systemd/system/ika.service
+    owner: root
+    mode: 0644
+
+- name: systemctl daemon reload
+  systemd:
+    name: ika
+    daemon_reload: yes
+
+- name: copy ika-0.1.0-SNAPSHOT.zip
+  copy:
+    src: ika-0.1.0-SNAPSHOT.zip
+    dest: /opt/ika/ika-0.1.0-SNAPSHOT.zip
+
+- name: delete old directory
+  file:
+    path: /opt/ika/ika--0.1.0-SNAPSHOT
+    state: absent
+
+- name: unzip ika
+  unarchive:
+    remote_src: yes
+    src: /opt/ika/ika-0.1.0-SNAPSHOT.zip
+    dest: /opt/ika
+
+- name: chown astel ika
+  file:
+    path: /opt/ika
+    owner: astel
+    group: astel
+    state: directory
+    recurse: yes
+
+- name: copy application.conf
+  template:
+    src: application.conf
+    dest: /etc/ika/application.conf
+    owner: astel
+    group: astel
+
+- name: copy logback.xml
+  copy:
+    src: logback.xml
+    dest: /etc/ika/logback.xml
+    owner: astel
+    group: astel
+
+- name: ika stop
+  systemd:
+    name: ika
+    state: stopped
+
+- name: ika start
+  systemd:
+    name: ika
+    state: started

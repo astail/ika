@@ -1,0 +1,6 @@
+---
+
+- hosts: ika
+  become: yes
+  roles:
+    - ika

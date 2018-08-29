@@ -1,0 +1,3 @@
+---
+
+discord_token: "{{ vault_discord_token }}"
