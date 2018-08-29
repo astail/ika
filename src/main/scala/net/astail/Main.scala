@@ -65,11 +65,11 @@ object Main {
           case _ => None
         }
 
-        val strCheck = checkTime.flatMap(ti => checkBattle.map(ba => (ba,ti)) )
+        val strCheck = checkTime.flatMap(time => checkBattle.map(battle => (battle, time)) )
 
         val kekka: Option[String] = strCheck match {
           case Some(x) => val (battle, time) = strCheck.get
-            ika(battle,time)
+            ika(battle, time)
           case _ => None
         }
 
