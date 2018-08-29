@@ -50,9 +50,14 @@ object Main {
     class MessageListener extends ListenerAdapter {
       override def onMessageReceived(event: MessageReceivedEvent): Unit = {
 
+        val checkHelp: Option[String] = event.getMessage.getContentDisplay match {
+          case e if e contains "ikahelp" => Some("ikahelp")
+          case _ => None
+        }
+
         val checkTime: Option[String] = event.getMessage.getContentDisplay match {
-          case e if e contains "今" => Some("now")
-          case e if e contains "次" => Some("next")
+          case e if e contains "今の" => Some("now")
+          case e if e contains "次の" => Some("next")
           case _ => None
         }
 
@@ -65,11 +70,13 @@ object Main {
           case _ => None
         }
 
-        val strCheck = checkTime.flatMap(time => checkBattle.map(battle => (battle, time)) )
+        val strCheck: Option[(String, String)] = checkTime.flatMap(time => checkBattle.map(battle => (battle, time)))
 
         val kekka: Option[String] = strCheck match {
-          case Some(x) => val (battle, time) = strCheck.get
+          case Some(x) => {
+            val (battle, time) = strCheck.get
             ika(battle, time)
+          }
           case _ => None
         }
 
@@ -77,6 +84,14 @@ object Main {
           case Some(x) => event.getTextChannel.sendMessage(x).queue
           case _ => None
         }
+
+        val ikahelp: String = "https://github.com/astail/ika/wiki#readme"
+
+        checkHelp match {
+          case Some("ikahelp") => event.getTextChannel.sendMessage(ikahelp).queue
+          case _ => None
+        }
+
       }
     }
 
@@ -90,7 +105,7 @@ object Main {
     class setGame extends EventListener {
       def onEvent(event: Event): Unit = {
         if (event.isInstanceOf[ReadyEvent])
-          event.getJDA.getPresence.setGame(Game.of(GameType.DEFAULT,"aaaa"))
+          event.getJDA.getPresence.setGame(Game.of(GameType.DEFAULT, "aaaa"))
       }
     }
 
