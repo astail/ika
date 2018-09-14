@@ -13,7 +13,6 @@ import net.dv8tion.jda.core.hooks.{EventListener, ListenerAdapter}
 object discord {
 
   val token = ConfigFactory.load.getString("discord_token")
-  val setStatus = "aaaa"
   val ikahelp = "https://github.com/astail/ika/wiki#readme"
 
   def ReadyListener = {
@@ -80,22 +79,20 @@ object discord {
         case Some("ikahelp") => event.getTextChannel.sendMessage(ikahelp).queue
         case _ => None
       }
-
     }
   }
 
-  def setGame = {
+  def setGame(setName: String) = {
     @throws[LoginException]
     @throws[RateLimitedException]
     @throws[InterruptedException]
-    val jda: JDA = new JDABuilder(AccountType.BOT).setToken(token).addEventListener(new setGame).buildBlocking
+    val jda: JDA = new JDABuilder(AccountType.BOT).setToken(token).addEventListener(new setGame(setName)).buildBlocking
   }
 
-  class setGame extends EventListener {
+  class setGame(setName: String) extends EventListener {
     def onEvent(event: Event): Unit = {
       if (event.isInstanceOf[ReadyEvent])
-        event.getJDA.getPresence.setGame(Game.of(GameType.DEFAULT, setStatus))
+        event.getJDA.getPresence.setGame(Game.of(GameType.DEFAULT, setName))
     }
   }
-
 }

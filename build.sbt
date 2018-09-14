@@ -13,7 +13,8 @@ libraryDependencies ++= Seq(
   "com.typesafe" % "config" % "1.3.3",
   "org.json4s" %% "json4s-native" % "3.6.0-M3",
   "org.json4s" %% "json4s-jackson" % "3.6.0-M3",
-  "net.dv8tion" % "JDA" % "3.7.1_392"
+  "net.dv8tion" % "JDA" % "3.7.1_392",
+  "com.twitter" %% "util-core" % "18.9.0"
 )
 
 enablePlugins(JavaAppPackaging)
