@@ -4,12 +4,14 @@ import java.net.URL
 
 import org.json4s.DefaultFormats
 import org.json4s.jackson.JsonMethods.parse
+import org.slf4j.{Logger, LoggerFactory}
 
 import scala.io.Source
 
 object ika {
-  def ika(battle: String, time: String): Option[String] = {
+  val logger: Logger = LoggerFactory.getLogger(this.getClass)
 
+  def ika(battle: String, time: String): Option[String] = {
     val api = battle match {
       case "coop" | "coop_weapons_images" => "https://spla2.yuu26.com/coop/schedule"
       case _ => s"https://spla2.yuu26.com/${battle}/${time}"
@@ -38,7 +40,6 @@ object ika {
   }
 
 
-
   def normal(api: String, battle2: String, time2: String): String = {
     val resultData1 = resultData(api)
     val map: String = resultData1.maps.mkString(",")
@@ -51,7 +52,7 @@ object ika {
 
 
   def resultData(api: String): Result = {
-    val jsonObj = resultD(api)
+    val jsonObj = retry(resultD(api))
 
     implicit val formats = DefaultFormats
     val listResult = (jsonObj \ "result").extract[List[Result]]
@@ -64,12 +65,27 @@ object ika {
     val requestProperties = Map(
       "User-Agent" -> "@astel4696"
     )
+
     val connection = new URL(stackOverflowURL).openConnection
     requestProperties.foreach({
       case (name, value) => connection.setRequestProperty(name, value)
     })
     val str = Source.fromInputStream(connection.getInputStream).mkString
     parse(str)
+  }
+
+
+  def retry[R](f: => R, time: Int = 12): R = {
+    try {
+      f
+    } catch {
+      case _: Throwable if time > 0 => {
+        logger.info(s"retry time: $time, f: $f")
+        // 10秒
+        Thread.sleep(10000)
+        retry(f, time - 1)
+      }
+    }
   }
 
 }

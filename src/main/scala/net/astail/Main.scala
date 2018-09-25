@@ -3,10 +3,15 @@ package net.astail
 import com.twitter.util.Time
 import com.twitter.util.JavaTimer
 import com.twitter.conversions.time._
+import org.slf4j.{Logger, LoggerFactory}
 
 object Main {
   def main(args: Array[String]): Unit = {
-    discord.ReadyListener
+
+    val logger: Logger = LoggerFactory.getLogger(this.getClass)
+
+    logger.info("================================= start ika =================================")
+
     discord.MessageListener
 
 

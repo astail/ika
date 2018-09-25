@@ -9,25 +9,14 @@ import net.dv8tion.jda.core.events.{Event, ReadyEvent}
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent
 import net.dv8tion.jda.core.exceptions.RateLimitedException
 import net.dv8tion.jda.core.hooks.{EventListener, ListenerAdapter}
+import org.slf4j.{Logger, LoggerFactory}
 
 object discord {
 
   val token = ConfigFactory.load.getString("discord_token")
   val ikahelp = "https://github.com/astail/ika/wiki#readme"
 
-  def ReadyListener = {
-    @throws[LoginException]
-    @throws[RateLimitedException]
-    @throws[InterruptedException]
-    val jda: JDA = new JDABuilder(AccountType.BOT).setToken(token).addEventListener(new ReadyListener).buildBlocking
-  }
-
-  class ReadyListener extends EventListener {
-    def onEvent(event: Event): Unit = {
-      if (event.isInstanceOf[ReadyEvent]) println("API is ready!")
-    }
-  }
-
+  val logger: Logger = LoggerFactory.getLogger(this.getClass)
 
   def MessageListener {
     @throws[LoginException]
@@ -91,8 +80,13 @@ object discord {
 
   class setGame(setName: String) extends EventListener {
     def onEvent(event: Event): Unit = {
-      if (event.isInstanceOf[ReadyEvent])
+      if (event.isInstanceOf[ReadyEvent]) {
+        logger.info("=== set Game start ===")
         event.getJDA.getPresence.setGame(Game.of(GameType.DEFAULT, setName))
+        logger.info(s"$setName")
+        logger.info("=== set Game end ===")
+      }
     }
   }
+
 }
