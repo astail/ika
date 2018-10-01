@@ -99,7 +99,7 @@ object ika {
   def resultD(api: String) = {
     val url = api
     val requestProperties = Map(
-      "User-Agent" -> "@astel4696"
+      "User-Agent" -> "twitter @astel4696"
     )
 
     val connection = new URL(url).openConnection
@@ -111,14 +111,14 @@ object ika {
   }
 
 
-  def retry[R](f: => R, time: Int = 12): R = {
+  def retry[R](f: => R, time: Int = 6): R = {
     try {
       f
     } catch {
       case _: Throwable if time > 0 => {
         logger.info(s"retry time: $time, f: $f")
-        // 10秒
-        Thread.sleep(10000)
+        // 30秒
+        Thread.sleep(30000)
         retry(f, time - 1)
       }
     }
