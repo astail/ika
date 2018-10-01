@@ -1,6 +1,7 @@
 package net.astail
 
 import net.astail.ika.resultD
+import net.astail.model.timeDisplay
 import org.joda.time.DateTime
 import org.json4s.DefaultFormats
 
@@ -23,7 +24,7 @@ object coop {
     else
       "シフトを確認してくれたまえ"
 
-    (s"${kuma}\n時間: ${sTime} ~ ${eTime}\nステージ: ${stage}\n武器: ${weapons}")
+    (s"${kuma}\n時間: ${timeDisplay(sTime)} ~ ${timeDisplay(eTime)}\nステージ: ${stage}\n武器: ${weapons}")
   }
 
   def coop_weapons_images(api: String, time: String): String = {

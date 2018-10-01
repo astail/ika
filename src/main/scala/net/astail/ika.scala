@@ -8,6 +8,8 @@ import org.slf4j.{Logger, LoggerFactory}
 
 import scala.io.Source
 
+import net.astail.model.timeDisplay
+
 object ika {
   val logger: Logger = LoggerFactory.getLogger(this.getClass)
 
@@ -50,8 +52,8 @@ object ika {
     val resultData1 = resultData(api)
     val map: String = resultData1.maps.mkString(",")
     val rule: String = resultData1.rule_ex.name
-    val sTime = resultData1.start
-    val eTime = resultData1.end
+    val sTime = timeDisplay(resultData1.start)
+    val eTime = timeDisplay(resultData1.end)
 
     (s"バトル: ${battle2}\n時間: ${time2}, ${sTime} ~ ${eTime}\nルール: ${rule}\nマップ: ${map}")
   }
@@ -67,8 +69,8 @@ object ika {
       x.rule match {
         case `gachiBattle2` => {
           val map: String = x.maps.mkString(",")
-          val sTime = x.start
-          val eTime = x.end
+          val sTime = timeDisplay(x.start)
+          val eTime = timeDisplay(x.end)
           Some(s"${sTime} ~ ${eTime}, マップ: ${map}")
         }
         case _ => None
