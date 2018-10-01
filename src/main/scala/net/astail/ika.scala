@@ -14,6 +14,7 @@ object ika {
   def ika(battle: String, time: String): Option[String] = {
     val api = battle match {
       case "coop" | "coop_weapons_images" => "https://spla2.yuu26.com/coop/schedule"
+      case "area"| "scaffold" | "grampus" | "clams" => "https://spla2.yuu26.com/gachi/schedule"
       case _ => s"https://spla2.yuu26.com/${battle}/${time}"
     }
 
@@ -23,6 +24,10 @@ object ika {
       case "league" => "リーグ"
       case "coop" => "バイト"
       case "coop_weapons_images" => "バイト武器"
+      case "area" => "エリア"
+      case "scaffold" => "ヤグラ"
+      case "grampus" => "ホコ"
+      case "clams" => "アサリ"
       case _ => "error"
     }
 
@@ -35,6 +40,7 @@ object ika {
     battle match {
       case "coop" => Some(coop.coop(api, time))
       case "coop_weapons_images" => Some(coop.coop_weapons_images(api, time))
+      case "area" | "scaffold" | "grampus" | "clams" => Some(schedule(api, battle2, time2))
       case _ => Some(normal(api, battle2, time2))
     }
   }
@@ -50,6 +56,36 @@ object ika {
     (s"バトル: ${battle2}\n時間: ${time2}, ${sTime} ~ ${eTime}\nルール: ${rule}\nマップ: ${map}")
   }
 
+  def schedule(api: String, battle2: String, time2: String) = {
+    val resultData1 = resultData2(api)
+
+    val gachiBattle2: String = battle2 match {
+      case "ホコ" => "ガチ" + battle2 + "バトル"
+      case _ => "ガチ" + battle2
+    }
+    val gachiList: List[String] = resultData1.flatMap(x =>
+      x.rule match {
+        case `gachiBattle2` => {
+          val map: String = x.maps.mkString(",")
+          val sTime = x.start
+          val eTime = x.end
+          Some(s"${sTime} ~ ${eTime}, マップ: ${map}")
+        }
+        case _ => None
+      }
+    )
+
+    gachiList.mkString("\n")
+  }
+
+
+  def resultData2(api: String) = {
+    val jsonObj = retry(resultD(api))
+
+    implicit val formats = DefaultFormats
+    (jsonObj \ "result").extract[List[Result]]
+  }
+
 
   def resultData(api: String): Result = {
     val jsonObj = retry(resultD(api))
@@ -61,15 +97,15 @@ object ika {
 
 
   def resultD(api: String) = {
-    val stackOverflowURL = api
+    val url = api
     val requestProperties = Map(
       "User-Agent" -> "@astel4696"
     )
 
-    val connection = new URL(stackOverflowURL).openConnection
-    requestProperties.foreach({
+    val connection = new URL(url).openConnection
+    requestProperties.foreach {
       case (name, value) => connection.setRequestProperty(name, value)
-    })
+    }
     val str = Source.fromInputStream(connection.getInputStream).mkString
     parse(str)
   }

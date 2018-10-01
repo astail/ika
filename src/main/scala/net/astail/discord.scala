@@ -12,7 +12,6 @@ import net.dv8tion.jda.core.hooks.{EventListener, ListenerAdapter}
 import org.slf4j.{Logger, LoggerFactory}
 
 object discord {
-
   val token = ConfigFactory.load.getString("discord_token")
   val ikahelp = "https://github.com/astail/ika/wiki#readme"
 
@@ -46,6 +45,10 @@ object discord {
         case e if e contains "リーグ" => Some("league")
         case e if e contains "バイト武器" => Some("coop_weapons_images")
         case e if e contains "バイト" => Some("coop")
+        case e if e contains "エリア" => Some("area")
+        case e if e contains "ヤグラ" => Some("scaffold")
+        case e if e contains "ホコ" => Some("grampus")
+        case e if e contains "アサリ" => Some("clams")
         case _ => None
       }
 
