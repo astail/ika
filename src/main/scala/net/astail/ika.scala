@@ -16,7 +16,7 @@ object ika {
   def ika(battle: String, time: String): Option[String] = {
     val api = battle match {
       case "coop" | "coop_weapons_images" => "https://spla2.yuu26.com/coop/schedule"
-      case "area"| "scaffold" | "grampus" | "clams" => "https://spla2.yuu26.com/gachi/schedule"
+      case "area" | "scaffold" | "grampus" | "clams" => "https://spla2.yuu26.com/gachi/schedule"
       case _ => s"https://spla2.yuu26.com/${battle}/${time}"
     }
 

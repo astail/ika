@@ -3,6 +3,6 @@ package net.astail
 object model {
 
   def timeDisplay(time: String) = {
-    time.replace("-","/").replace("T","-")
+    time.replace("-", "/").replace("T", "-")
   }
 }
