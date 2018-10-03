@@ -39,17 +39,20 @@ object discord {
         case _ => None
       }
 
-      val checkBattle: Option[String] = event.getMessage.getContentDisplay match {
-        case e if e contains "レギュラー" => Some("regular")
-        case e if e contains "ガチ" => Some("gachi")
-        case e if e contains "リーグ" => Some("league")
-        case e if e contains "バイト武器" => Some("coop_weapons_images")
-        case e if e contains "バイト" => Some("coop")
-        case e if e contains "エリア" => Some("area")
-        case e if e contains "ヤグラ" => Some("scaffold")
-        case e if e contains "ホコ" => Some("grampus")
-        case e if e contains "アサリ" => Some("clams")
-        case _ => None
+      val dictionary: Seq[(String, String)] = Seq(
+        "レギュラー" -> "regular",
+        "ガチ" -> "gachi",
+        "リーグ" -> "league",
+        "バイト武器" -> "coop_weapons_images",
+        "バイト" -> "coop",
+        "エリア" -> "area",
+        "ヤグラ" -> "scaffold",
+        "ホコ" -> "grampus",
+        "アサリ" -> "clams"
+      )
+
+      val checkBattle: Option[String] = dictionary.collectFirst {
+        case (keyword, result) if event.getMessage.getContentDisplay contains keyword => result
       }
 
       val strCheck: Option[(String, String)] = checkTime.flatMap(time => checkBattle.map(battle => (battle, time)))
