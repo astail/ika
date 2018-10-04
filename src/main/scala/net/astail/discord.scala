@@ -14,6 +14,7 @@ import org.slf4j.{Logger, LoggerFactory}
 object discord {
   val token = ConfigFactory.load.getString("discord_token")
   val ikahelp = "https://github.com/astail/ika/wiki#readme"
+  val discordWebhook = ConfigFactory.load.getString("discord_webhook")
 
   val logger: Logger = LoggerFactory.getLogger(this.getClass)
 
@@ -92,6 +93,22 @@ object discord {
         logger.info(s"$setName")
         logger.info("=== set Game end ===")
       }
+    }
+  }
+
+  def sendMessage(message: String) = {
+    import net.dv8tion.jda.webhook.WebhookClient
+    import net.dv8tion.jda.webhook.WebhookClientBuilder
+
+    val webhook: WebhookClientBuilder = new WebhookClientBuilder(discordWebhook)
+    val webhookCli: WebhookClient = webhook.build()
+
+    try {
+      webhookCli.send(message)
+    } catch {
+      case _ => logger.error(s"sendMessage error: $message")
+    } finally {
+      webhookCli.close()
     }
   }
 

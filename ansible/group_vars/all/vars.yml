@@ -1,3 +1,12 @@
 ---
 
 discord_token: "{{ vault_discord_token }}"
+
+twitter4sConsumerKey: "{{ vault_twitter4sConsumerKey }}"
+twitter4sConsumerSecret: "{{ vault_twitter4sConsumerSecret }}"
+twitter4sAccessToken: "{{ vault_twitter4sAccessToken }}"
+twitter4sCcessTokenSecret: "{{ vault_twitter4sCcessTokenSecret }}"
+
+TWITTERNAME: "{{ vault_TWITTERNAME }}"
+
+DISCORD_WEBHOOK: "{{ vault_DISCORD_WEBHOOK }}"
