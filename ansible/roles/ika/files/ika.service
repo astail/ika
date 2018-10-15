@@ -5,7 +5,7 @@ Description=ika
 User=astel
 Group=astel
 WorkingDirectory=/opt/ika/ika-0.1.0-SNAPSHOT
-Environment='JAVA_OPTS=-Xms64M -Xmx64M -XX:MaxMetaspaceSize=128M \
+Environment='JAVA_OPTS=-Xms256M -Xmx256M -XX:MaxMetaspaceSize=128M \
 -verbose:gc -Xloggc:/var/log/ika/gc.log -XX:+PrintGCDetails -XX:+PrintGCDateStamps \
 -XX:+UseGCLogFileRotation -XX:NumberOfGCLogFiles=10 -XX:GCLogFileSize=10M'
 EnvironmentFile=/home/astel/.bashrc
