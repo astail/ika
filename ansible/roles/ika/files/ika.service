@@ -8,7 +8,7 @@ WorkingDirectory=/opt/ika/ika-0.1.0-SNAPSHOT
 Environment='JAVA_OPTS=-Xms256M -Xmx256M -XX:MaxMetaspaceSize=128M \
 -verbose:gc -Xloggc:/var/log/ika/gc.log -XX:+PrintGCDetails -XX:+PrintGCDateStamps \
 -XX:+UseGCLogFileRotation -XX:NumberOfGCLogFiles=10 -XX:GCLogFileSize=10M'
-EnvironmentFile=/home/root/.bashrc
+EnvironmentFile=/root/.bashrc
 PIDFile=/var/run/ika/ika.pid
 ExecStart=/bin/sh -c "exec /opt/ika/ika-0.1.0-SNAPSHOT/bin/ika -Dpidfile.path=/var/run/ika/ika.pid -Dhttp.port=127.0.0.1 -Dhttp.port=9000 -Dconfig.file=/etc/ika/application.conf -Dlogback.configurationFile=/etc/ika/logback.xml >> /var/log/ika/console.log 2>&1"
 ExecStop=/usr/bin/kill -QUIT $MAINPID
