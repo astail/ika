@@ -10,8 +10,8 @@
 - name: mkdir ika
   file:
     path: "{{ item }}/ika"
-    owner: astel
-    group: astel
+    owner: root
+    group: root
     state: directory
   with_items:
     - /opt
@@ -52,11 +52,11 @@
     src: /opt/ika/ika-0.1.0-SNAPSHOT.zip
     dest: /opt/ika
 
-- name: chown astel ika
+- name: chown root ika
   file:
     path: /opt/ika
-    owner: astel
-    group: astel
+    owner: root
+    group: root
     state: directory
     recurse: yes
 
@@ -64,15 +64,15 @@
   template:
     src: application.conf
     dest: /etc/ika/application.conf
-    owner: astel
-    group: astel
+    owner: root
+    group: root
 
 - name: copy logback.xml
   copy:
     src: logback.xml
     dest: /etc/ika/logback.xml
-    owner: astel
-    group: astel
+    owner: root
+    group: root
 
 - name: ika stop
   systemd:
