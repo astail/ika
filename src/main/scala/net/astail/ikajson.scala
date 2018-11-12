@@ -1,6 +1,6 @@
 package net.astail
 
-case class Maps_ex(id: Int, name: String, statink: String)
+case class Maps_ex(id: Int, image: String, name: String, statink: String)
 
 case class Rule_ex(key: String, name: String, statink: String)
 
