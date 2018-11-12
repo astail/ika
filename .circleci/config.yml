@@ -31,7 +31,7 @@ jobs:
     steps:
       - checkout
       - run: sudo apt-get install libyaml-dev
-      - run: sudo pip install ansible==2.7.0 ansible-lint
+      - run: sudo pip install ansible ansible-lint
       - run: ansible --version
       - run: cd ansible && echo "${ANSIBLE_VAULT_PASS}" > ansible_vault.txt
       - run: cd ansible && ansible-lint site.yml
@@ -49,11 +49,11 @@ jobs:
             - "95:39:37:25:ca:90:c7:22:02:03:74:46:2d:a5:41:13"
 
       - run: git --version
-      - run: ssh -A -p6528 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${USER_NAME}@${HOST_NAME} "mkdir -p /root/ika/target/universal"
+      - run: ssh -A ${HOST_NAME} -l${USER_NAME} -p6528 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null "mkdir -p /root/ika/target/universal"
       - run: scp -P6528 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null target/universal/ika-0.1.0-SNAPSHOT.zip ${USER_NAME}@${HOST_NAME}:/root/ika/target/universal/ika-0.1.0-SNAPSHOT.zip
       - run: echo "${ANSIBLE_VAULT_PASS}" > ansible_vault.txt
       - run: scp -P6528 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ansible_vault.txt ${USER_NAME}@${HOST_NAME}:/root/ika/ansible/ansible_vault.txt
-      - run: ssh -A -p6528 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${USER_NAME}@${HOST_NAME} "cd /root/ika && git pull && cd ansible && ansible-playbook -i inventory/hosts site.yml --vault-password-file ansible_vault.txt"
+      - run: ssh -A ${HOST_NAME} -l${USER_NAME} -p6528 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null "cd /root/ika && git pull && cd ansible && ansible-playbook -i inventory/hosts site.yml --vault-password-file ansible_vault.txt"
 
 workflows:
   version: 2
@@ -64,6 +64,7 @@ workflows:
       - deploy:
           requires:
             - build
+            - ansible
           filters:
             branches:
               only: master

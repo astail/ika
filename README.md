@@ -1,5 +1,7 @@
 # ika
 
+[![CircleCI](https://circleci.com/gh/astail/ika.svg?style=svg)](https://circleci.com/gh/astail/ika)
+
 local run
 
 `sbt run`
