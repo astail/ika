@@ -16,6 +16,7 @@ object coop {
     val timestamp: DateTime = DateTime.now()
     val resultDataCoop1 = resultDataCoop(api, time)
     val stage: String = resultDataCoop1.stage.name
+    val stageImage: String = resultDataCoop1.stage.image
     val weapons = resultDataCoop1.weapons.map(_.name).mkString(",")
     val sTime = resultDataCoop1.start
     val eTime = resultDataCoop1.end
@@ -24,7 +25,7 @@ object coop {
     else
       "シフトを確認してくれたまえ"
 
-    (s"${kuma}\n時間: ${timeDisplay(sTime)} ~ ${timeDisplay(eTime)}\nステージ: ${stage}\n武器: ${weapons}")
+    (s"${kuma}\n時間: ${timeDisplay(sTime)} ~ ${timeDisplay(eTime)}\nステージ: ${stage}\n武器: ${weapons}\n${stageImage}")
   }
 
   def coop_weapons_images(api: String, time: String): String = {
