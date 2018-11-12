@@ -25,3 +25,5 @@ node_modules
 *~
 
 get_files
+
+ansible/ansible_vault.txt
