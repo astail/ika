@@ -20,7 +20,7 @@ object Main {
     val twitterUserName = ConfigFactory.load.getString("twitter_name")
 
     def gameSet = {
-      val setGameStart = ika.ika("coop", "now")
+      val setGameStart = ika.ika("coop_check", "now")
 
       setGameStart match {
         case Some(x) => discord.setGame(x.toString)

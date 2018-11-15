@@ -44,8 +44,9 @@ object discord {
         "レギュラー" -> "regular",
         "ガチ" -> "gachi",
         "リーグ" -> "league",
-        "バイト武器" -> "coop_weapons_images",
         "バイト" -> "coop",
+        "バイト確認" -> "coop_check",
+        "バイト武器" -> "coop_weapons_images",
         "エリア" -> "area",
         "ヤグラ" -> "scaffold",
         "ホコ" -> "grampus",
@@ -53,7 +54,7 @@ object discord {
       )
 
       val checkBattle: Option[String] = dictionary.collectFirst {
-        case (keyword, result) if event.getMessage.getContentDisplay contains keyword => result
+        case (keyword, result) if event.getMessage.getContentDisplay endsWith keyword => result
       }
 
       val strCheck: Option[(String, String)] = checkTime.flatMap(time => checkBattle.map(battle => (battle, time)))

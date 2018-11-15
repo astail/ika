@@ -2,7 +2,9 @@ package net.astail
 
 import net.astail.ika.resultD
 import net.astail.model.timeDisplay
+import com.github.nscala_time.time.Imports._
 import org.joda.time.DateTime
+import org.joda.time.Hours
 import org.json4s.DefaultFormats
 
 object coop {
@@ -47,6 +49,22 @@ object coop {
       case "now" => listResult(0)
       case "next" => listResult(1)
       case _ => listResult(0)
+    }
+  }
+
+  def setCoop(api: String, time: String): String = {
+    val timestamp: DateTime = DateTime.now()
+    val resultDataCoop1 = resultDataCoop(api, time)
+    val sTime = resultDataCoop1.start
+    val eTime = resultDataCoop1.end
+
+    if (checkTime(sTime, eTime, timestamp)) {
+      val endHour: Int = Hours.hoursBetween(timestamp, eTime.toDateTime).getHours()
+      s"バイト募集中 @${endHour}時間"
+    }
+    else {
+      val startHour: Int = Hours.hoursBetween(timestamp, sTime.toDateTime).getHours()
+      s"シフトを確認してくれたまえ @${startHour}時間"
     }
   }
 
