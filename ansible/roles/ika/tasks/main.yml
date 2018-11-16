@@ -1,11 +1,11 @@
 ---
 
-#- name: install
-#  yum:
-#    name: "{{ item }}"
-#  with_items:
-#    - java
-#    - unzip
+- name: install
+  yum:
+    name:
+      - java
+      - unzip
+      - ImageMagick
 
 - name: mkdir ika
   file:
