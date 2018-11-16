@@ -60,11 +60,11 @@ object coop {
 
     if (checkTime(sTime, eTime, timestamp)) {
       val endHour: Int = Hours.hoursBetween(timestamp, eTime.toDateTime).getHours()
-      s"バイト募集中 @${endHour}時間"
+      s"@${endHour}時間 バイト募集中"
     }
     else {
       val startHour: Int = Hours.hoursBetween(timestamp, sTime.toDateTime).getHours()
-      s"シフトを確認してくれたまえ @${startHour}時間"
+      s"@${startHour}時間 シフトを確認してくれたまえ"
     }
   }
 
