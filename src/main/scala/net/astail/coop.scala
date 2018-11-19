@@ -7,6 +7,8 @@ import org.joda.time.DateTime
 import org.joda.time.Hours
 import org.json4s.DefaultFormats
 
+import net.astail.ImageMagickWrapper._
+
 object coop {
   def checkTime(s: String, e: String, now: DateTime): Boolean = {
     val sTime = new DateTime(s)
@@ -52,6 +54,14 @@ object coop {
     }
   }
 
+  def coopEndImage(api: String, time: String): String = {
+    val resultDataCoop1 = resultDataCoop(api, time)
+    val stageImage: String = resultDataCoop1.stage.image
+    val weaponsImage = resultDataCoop1.weapons.map(_.image)
+
+    mergeWeaponsAndMaps(stageImage, weaponsImage)
+  }
+
   def setCoop(api: String, time: String): String = {
     val timestamp: DateTime = DateTime.now()
     val resultDataCoop1 = resultDataCoop(api, time)
@@ -66,6 +76,15 @@ object coop {
       val startHour: Int = Hours.hoursBetween(timestamp, sTime.toDateTime).getHours()
       s"@${startHour}時間 シフトを確認してくれたまえ"
     }
+  }
+
+
+  def mergeWeaponsAndMaps(map: String, weapons: List[String]): String = {
+    val mapData = sizeCheck(map)
+    val weaponsImage: String = imageAppend(weapons, Width)
+    val resizeWeaponsImage: String = resize(weaponsImage, mapData.width, Width)
+
+    imageAppend(List(map, resizeWeaponsImage), Height)
   }
 
 }
