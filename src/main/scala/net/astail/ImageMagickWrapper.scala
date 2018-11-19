@@ -3,6 +3,7 @@ package net.astail
 import sys.process._
 
 object ImageMagickWrapper {
+  val DESTIMAGEDIR = "./destImages"
 
   case class ImageIdentify(format: String, width: Int, height: Int)
 
@@ -28,7 +29,7 @@ object ImageMagickWrapper {
   }
 
   def resize(img: String, size: Int, wh: Image): String = {
-    val destImage = s"/tmp/${imageNameCheck(img)}"
+    val destImage = s"${DESTIMAGEDIR}/${imageNameCheck(img)}"
     try {
       val resizeWH = wh match {
         case Width => s"${size}x"
@@ -44,7 +45,7 @@ object ImageMagickWrapper {
   def imageAppend(images: List[(String)], wh: Image): String = {
     val imagesNameCheck = images.map(imageNameCheck(_))
     val mergeImage = images.mkString(",").replace(",", " ")
-    val destImage = s"/tmp/${imagesNameCheck.head}"
+    val destImage = s"${DESTIMAGEDIR}/${imagesNameCheck.head}"
     val whCheck = wh match {
       case Width => "+append"
       case Height => "-append"
@@ -55,6 +56,14 @@ object ImageMagickWrapper {
       destImage
     } catch {
       case e: Throwable => "imageWidthAppend error"
+    }
+  }
+
+  def delImage(image: String) = {
+    try {
+      Process(s"rm -f  ${image}").!
+    } catch {
+      case e: Throwable => "delImage error"
     }
   }
 

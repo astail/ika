@@ -59,7 +59,20 @@ object coop {
     val stageImage: String = resultDataCoop1.stage.image
     val weaponsImage = resultDataCoop1.weapons.map(_.image)
 
-    mergeWeaponsAndMaps(stageImage, weaponsImage)
+
+    val timestamp: DateTime = DateTime.now()
+    val stage: String = resultDataCoop1.stage.name
+    val weapons = resultDataCoop1.weapons.map(_.name).mkString(",")
+    val sTime = resultDataCoop1.start
+    val eTime = resultDataCoop1.end
+    val kuma = if (checkTime(sTime, eTime, timestamp))
+      "バイト募集中"
+    else
+      "シフトを確認してくれたまえ"
+
+    val newStageImage = mergeWeaponsAndMaps(stageImage, weaponsImage)
+
+    (s"${kuma}\n時間: ${timeDisplay(sTime)} ~ ${timeDisplay(eTime)}\nステージ: ${stage}\n武器: ${weapons}\n${newStageImage}")
   }
 
   def setCoop(api: String, time: String): String = {
@@ -83,8 +96,9 @@ object coop {
     val mapData = sizeCheck(map)
     val weaponsImage: String = imageAppend(weapons, Width)
     val resizeWeaponsImage: String = resize(weaponsImage, mapData.width, Width)
+    val merge = imageAppend(List(map, resizeWeaponsImage), Height)
+    delImage(resizeWeaponsImage)
 
-    imageAppend(List(map, resizeWeaponsImage), Height)
+    merge
   }
-
 }
