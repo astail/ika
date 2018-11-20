@@ -45,6 +45,7 @@ object discord {
         "ガチ" -> "gachi",
         "リーグ" -> "league",
         "バイト" -> "coop",
+        "新しいバイトは" -> "new_coop",
         "バイト確認" -> "coop_check",
         "バイト武器" -> "coop_weapons_images",
         "エリア" -> "area",
