@@ -3,7 +3,7 @@ package net.astail
 import sys.process._
 
 object ImageMagickWrapper {
-  val DESTIMAGEDIR = "./destImages"
+  val DESTIMAGEDIR = "/var/www/ika"
 
   case class ImageIdentify(format: String, width: Int, height: Int)
 
@@ -61,7 +61,7 @@ object ImageMagickWrapper {
 
   def delImage(image: String) = {
     try {
-      Process(s"rm -f  ${image}").!
+      Process(s"rm -f ${image}").!
     } catch {
       case e: Throwable => "delImage error"
     }

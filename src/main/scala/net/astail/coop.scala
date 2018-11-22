@@ -57,8 +57,7 @@ object coop {
   def coopEndImage(api: String, time: String): String = {
     val resultDataCoop1 = resultDataCoop(api, time)
     val stageImage: String = resultDataCoop1.stage.image
-    val weaponsImage = resultDataCoop1.weapons.map(_.image)
-
+    val weaponsImage: List[String] = resultDataCoop1.weapons.map(_.image)
 
     val timestamp: DateTime = DateTime.now()
     val stage: String = resultDataCoop1.stage.name
@@ -90,7 +89,6 @@ object coop {
       s"@${startHour}時間 シフトを確認してくれたまえ"
     }
   }
-
 
   def mergeWeaponsAndMaps(map: String, weapons: List[String]): String = {
     val mapData = sizeCheck(map)
