@@ -16,22 +16,6 @@ object coop {
     now.isAfter(sTime) && now.isBefore(eTime)
   }
 
-  def coop(api: String, time: String): String = {
-    val timestamp: DateTime = DateTime.now()
-    val resultDataCoop1 = resultDataCoop(api, time)
-    val stage: String = resultDataCoop1.stage.name
-    val stageImage: String = resultDataCoop1.stage.image
-    val weapons = resultDataCoop1.weapons.map(_.name).mkString(",")
-    val sTime = resultDataCoop1.start
-    val eTime = resultDataCoop1.end
-    val kuma = if (checkTime(sTime, eTime, timestamp))
-      "バイト募集中"
-    else
-      "シフトを確認してくれたまえ"
-
-    (s"${kuma}\n時間: ${timeDisplay(sTime)} ~ ${timeDisplay(eTime)}\nステージ: ${stage}\n武器: ${weapons}\n${stageImage}")
-  }
-
   def coop_weapons_images(api: String, time: String): String = {
     val resultDataCoop1 = resultDataCoop(api, time)
 
