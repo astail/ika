@@ -10,3 +10,5 @@ twitter4sCcessTokenSecret: "{{ vault_twitter4sCcessTokenSecret }}"
 TWITTERNAME: "{{ vault_TWITTERNAME }}"
 
 DISCORD_WEBHOOK: "{{ vault_DISCORD_WEBHOOK }}"
+
+DOMAIN: "{{ vault_DOMAIN }}"

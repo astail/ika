@@ -3,10 +3,10 @@ package net.astail
 import net.astail.ika.resultD
 import net.astail.model.timeDisplay
 import com.github.nscala_time.time.Imports._
+import com.typesafe.config.ConfigFactory
 import org.joda.time.DateTime
 import org.joda.time.Hours
 import org.json4s.DefaultFormats
-
 import net.astail.ImageMagickWrapper._
 
 object coop {
@@ -69,9 +69,11 @@ object coop {
     else
       "シフトを確認してくれたまえ"
 
-    val newStageImage = mergeWeaponsAndMaps(stageImage, weaponsImage)
+    val newStageImage: String = mergeWeaponsAndMaps(stageImage, weaponsImage)
 
-    (s"${kuma}\n時間: ${timeDisplay(sTime)} ~ ${timeDisplay(eTime)}\nステージ: ${stage}\n武器: ${weapons}\n${newStageImage}")
+    val newStageImageHttp: String = dirToHttp(newStageImage)
+
+    (s"${kuma}\n時間: ${timeDisplay(sTime)} ~ ${timeDisplay(eTime)}\nステージ: ${stage}\n武器: ${weapons}\n${newStageImageHttp}")
   }
 
   def setCoop(api: String, time: String): String = {
@@ -98,5 +100,10 @@ object coop {
     delImage(resizeWeaponsImage)
 
     merge
+  }
+
+  def dirToHttp(name: String): String = {
+    val domain = ConfigFactory.load.getString("domain")
+    domain + "/" + name.split('/').last
   }
 }
