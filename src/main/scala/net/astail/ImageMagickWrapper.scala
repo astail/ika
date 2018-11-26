@@ -1,5 +1,7 @@
 package net.astail
 
+import org.joda.time.DateTime
+
 import sys.process._
 
 object ImageMagickWrapper {
@@ -42,10 +44,11 @@ object ImageMagickWrapper {
     }
   }
 
-  def imageAppend(images: List[(String)], wh: Image): String = {
+  def imageAppend(images: List[String], wh: Image): String = {
+    val time: DateTime = DateTime.now()
     val imagesNameCheck = images.map(imageNameCheck(_))
     val mergeImage = images.mkString(",").replace(",", " ")
-    val destImage = s"${DESTIMAGEDIR}/${imagesNameCheck.head}"
+    val destImage = s"${DESTIMAGEDIR}/${time.toString("yyyymmdd")}_${imagesNameCheck.head}"
     val whCheck = wh match {
       case Width => "+append"
       case Height => "-append"
