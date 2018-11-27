@@ -28,42 +28,51 @@ object discord {
   class MessageListener extends ListenerAdapter {
     override def onMessageReceived(event: MessageReceivedEvent): Unit = {
 
-      val checkTime: Option[String] = event.getMessage.getContentDisplay match {
-        case e if e contains "今の" => Some("now")
-        case e if e contains "次の" => Some("next")
-        case _ => None
-      }
-
-      val dictionary: Seq[(String, String)] = Seq(
-        "レギュラー" -> "regular",
-        "ガチ" -> "gachi",
-        "リーグ" -> "league",
-        "バイト" -> "new_coop",
-        "バイト確認" -> "coop_check",
-        "バイト武器" -> "coop_weapons_images",
-        "エリア" -> "area",
-        "ヤグラ" -> "scaffold",
-        "ホコ" -> "grampus",
-        "アサリ" -> "clams"
-      )
-
-      val checkBattle: Option[String] = dictionary.collectFirst {
-        case (keyword, result) if event.getMessage.getContentDisplay endsWith keyword => result
-      }
-
-      val strCheck: Option[(String, String)] = checkTime.flatMap(time => checkBattle.map(battle => (battle, time)))
-
-      val kekka: Option[String] = strCheck match {
-        case Some(x) => {
-          val (battle, time) = strCheck.get
-          ika.ika(battle, time)
+      event.getMessage.getContentDisplay match {
+        case e if e contains "バイト一覧" => {
+          val x: Option[String] = ika.ika("all_coop", "all")
+          event.getTextChannel.sendMessage(x.getOrElse("エラー")).queue
         }
-        case _ => None
-      }
+        case _ => {
 
-      kekka match {
-        case Some(x) => event.getTextChannel.sendMessage(x).queue
-        case _ => None
+          val checkTime: Option[String] = event.getMessage.getContentDisplay match {
+            case e if e startsWith "今の" => Some("now")
+            case e if e startsWith "次の" => Some("next")
+            case _ => None
+          }
+
+          val dictionary: Seq[(String, String)] = Seq(
+            "レギュラー" -> "regular",
+            "ガチ" -> "gachi",
+            "リーグ" -> "league",
+            "バイト" -> "new_coop",
+            "バイト確認" -> "coop_check",
+            "バイト武器" -> "coop_weapons_images",
+            "エリア" -> "area",
+            "ヤグラ" -> "scaffold",
+            "ホコ" -> "grampus",
+            "アサリ" -> "clams"
+          )
+
+          val checkBattle: Option[String] = dictionary.collectFirst {
+            case (keyword, result) if event.getMessage.getContentDisplay endsWith keyword => result
+          }
+
+          val strCheck: Option[(String, String)] = checkTime.flatMap(time => checkBattle.map(battle => (battle, time)))
+
+          val kekka: Option[String] = strCheck match {
+            case Some(x) => {
+              val (battle, time) = strCheck.get
+              ika.ika(battle, time)
+            }
+            case _ => None
+          }
+
+          kekka match {
+            case Some(x) => event.getTextChannel.sendMessage(x).queue
+            case _ => None
+          }
+        }
       }
     }
   }
