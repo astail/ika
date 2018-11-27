@@ -30,8 +30,13 @@ object discord {
 
       event.getMessage.getContentDisplay match {
         case e if e contains "バイト一覧" => {
-          val x: Option[String] = ika.ika("all_coop", "all")
-          event.getTextChannel.sendMessage(x.getOrElse("エラー")).queue
+
+          val now: Option[String] = ika.ika("new_coop", "now")
+          val next: Option[String] = ika.ika("new_coop", "next")
+
+          event.getTextChannel.sendMessage(now.getOrElse("エラー")).queue
+          Thread.sleep(1000)
+          event.getTextChannel.sendMessage(next.getOrElse("エラー")).queue
         }
         case _ => {
 

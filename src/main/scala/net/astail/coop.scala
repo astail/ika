@@ -38,7 +38,7 @@ object coop {
     }
   }
 
-  def coopEndImage(api: String, time: String, kumaB: Boolean = true): String = {
+  def coopEndImage(api: String, time: String): String = {
     val resultDataCoop1 = resultDataCoop(api, time)
     val stageImage: String = resultDataCoop1.stage.image
     val weaponsImage: List[String] = resultDataCoop1.weapons.map(_.image)
@@ -57,8 +57,7 @@ object coop {
 
     val newStageImageHttp: String = dirToHttp(newStageImage)
 
-    if(kumaB) (s"${kuma}\n時間: ${timeDisplay(sTime)} ~ ${timeDisplay(eTime)}\nステージ: ${stage}\n武器: ${weapons}\n${newStageImageHttp}")
-    else (s"時間: ${timeDisplay(sTime)} ~ ${timeDisplay(eTime)}\nステージ: ${stage}\n武器: ${weapons}\n${newStageImageHttp}")
+    (s"${kuma}\n時間: ${timeDisplay(sTime)} ~ ${timeDisplay(eTime)}\nステージ: ${stage}\n武器: ${weapons}\n${newStageImageHttp}")
   }
 
   def setCoop(api: String, time: String): String = {
@@ -90,11 +89,5 @@ object coop {
   def dirToHttp(name: String): String = {
     val domain = ConfigFactory.load.getString("domain")
     domain + "/" + name.split('/').last
-  }
-
-  def allCoop(api: String): String = {
-    val now: String = coopEndImage(api, "now")
-    val next: String = coopEndImage(api, "next", false)
-    now + "\n\n" + next
   }
 }
