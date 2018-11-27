@@ -13,7 +13,6 @@ import org.slf4j.{Logger, LoggerFactory}
 
 object discord {
   val token = ConfigFactory.load.getString("discord_token")
-  val ikahelp = "https://github.com/astail/ika/wiki#readme"
   val discordWebhook = ConfigFactory.load.getString("discord_webhook")
 
   val logger: Logger = LoggerFactory.getLogger(this.getClass)
@@ -28,11 +27,6 @@ object discord {
 
   class MessageListener extends ListenerAdapter {
     override def onMessageReceived(event: MessageReceivedEvent): Unit = {
-
-      val checkHelp: Option[String] = event.getMessage.getContentDisplay match {
-        case e if e contains "ikahelp" => Some("ikahelp")
-        case _ => None
-      }
 
       val checkTime: Option[String] = event.getMessage.getContentDisplay match {
         case e if e contains "今の" => Some("now")
@@ -69,11 +63,6 @@ object discord {
 
       kekka match {
         case Some(x) => event.getTextChannel.sendMessage(x).queue
-        case _ => None
-      }
-
-      checkHelp match {
-        case Some("ikahelp") => event.getTextChannel.sendMessage(ikahelp).queue
         case _ => None
       }
     }
