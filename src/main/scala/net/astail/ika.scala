@@ -16,7 +16,7 @@ object ika {
   def ika(battle: String, time: String): Option[String] = {
     val api: String = battle match {
       case "coop_check" | "coop_weapons_images" | "new_coop" => "https://spla2.yuu26.com/coop/schedule"
-      case "area" | "scaffold" | "grampus" | "clams" => "https://spla2.yuu26.com/gachi/schedule"
+      case "area" | "scaffold" | "grampus" | "clams" | "gachi" => "https://spla2.yuu26.com/gachi/schedule"
       case _ => s"https://spla2.yuu26.com/${battle}/${time}"
     }
 
@@ -42,10 +42,11 @@ object ika {
     }
 
     battle match {
+      case "gachi" => Some(allGachiSchedule(api))
       case "new_coop" => Some(coop.coopEndImage(api, time))
       case "coop_check" => Some(coop.setCoop(api, time))
       case "coop_weapons_images" => Some(coop.coop_weapons_images(api, time))
-      case "area" | "scaffold" | "grampus" | "clams" => Some(schedule(api, battle2, time2))
+      case "area" | "scaffold" | "grampus" | "clams" => Some(schedule(api, battle2))
       case _ => Some(normal(api, battle2, time2))
     }
   }
@@ -62,7 +63,7 @@ object ika {
     (s"バトル: ${battle2}\n時間: ${time2}, ${sTime} ~ ${eTime}\nルール: ${rule}\nマップ: ${map}\n${mapImage}")
   }
 
-  def schedule(api: String, battle2: String, time2: String) = {
+  def schedule(api: String, battle2: String) = {
     val resultData1 = resultData2(api)
 
     val gachiBattle2: String = battle2 match {
@@ -82,6 +83,11 @@ object ika {
     )
 
     gachiList.mkString("\n")
+  }
+
+  def allGachiSchedule(api: String): String = {
+    val resultData1 = resultData2(api)
+    "TODO"
   }
 
 

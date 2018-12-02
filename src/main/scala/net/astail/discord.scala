@@ -38,6 +38,10 @@ object discord {
           Thread.sleep(1000)
           event.getTextChannel.sendMessage(next.getOrElse("エラー")).queue
         }
+        case e if e contains "ガチ一覧" => {
+          val now = ika.ika("gachi", "now")
+          event.getTextChannel.sendMessage(now.getOrElse("1エラー")).queue
+        }
         case _ => {
 
           val checkTime: Option[String] = event.getMessage.getContentDisplay match {
