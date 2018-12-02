@@ -62,9 +62,13 @@ object ImageMagickWrapper {
     }
   }
 
-  def delImage(image: String) = {
+  def delImage(image: String, dir: Boolean = false) = {
+
+    val deleteData = if(!dir) image
+    else s"${DESTIMAGEDIR}/${image}"
+
     try {
-      Process(s"rm -f ${image}").!
+      Process(s"rm -f ${deleteData}").!
     } catch {
       case e: Throwable => "delImage error"
     }
