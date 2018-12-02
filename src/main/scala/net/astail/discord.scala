@@ -39,7 +39,7 @@ object discord {
           event.getTextChannel.sendMessage(next.getOrElse("エラー")).queue
         }
         case e if e contains "ガチ一覧" => {
-          val now = ika.ika("gachi", "now")
+          val now = ika.ika("all_gachi", "now")
           event.getTextChannel.sendMessage(now.getOrElse("1エラー")).queue
         }
         case _ => {

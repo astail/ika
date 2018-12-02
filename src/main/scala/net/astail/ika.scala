@@ -16,12 +16,13 @@ object ika {
   def ika(battle: String, time: String): Option[String] = {
     val api: String = battle match {
       case "coop_check" | "coop_weapons_images" | "new_coop" => "https://spla2.yuu26.com/coop/schedule"
-      case "area" | "scaffold" | "grampus" | "clams" | "gachi" => "https://spla2.yuu26.com/gachi/schedule"
+      case "area" | "scaffold" | "grampus" | "clams" | "all_gachi" => "https://spla2.yuu26.com/gachi/schedule"
       case _ => s"https://spla2.yuu26.com/${battle}/${time}"
     }
 
     val battle2 = battle match {
       case "regular" => "レギュラー"
+      case "all_gachi" => "ガチ一覧"
       case "gachi" => "ガチ"
       case "league" => "リーグ"
       case "new_coop" => "バイト"
@@ -42,7 +43,7 @@ object ika {
     }
 
     battle match {
-      case "gachi" => Some(allGachiSchedule(api))
+      case "all_gachi" => Some(allGachiSchedule(api))
       case "new_coop" => Some(coop.coopEndImage(api, time))
       case "coop_check" => Some(coop.setCoop(api, time))
       case "coop_weapons_images" => Some(coop.coop_weapons_images(api, time))
