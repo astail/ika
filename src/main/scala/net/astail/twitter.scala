@@ -20,7 +20,7 @@ object twitter {
       case Success(msg) => for (tweet <- msg.data.reverse) {
         tweet.retweeted_status match {
           case None => {
-            if (checkTweetTournament(tweet.text)) {
+            if (checkTweetUser(screenName, tweet.text)) {
               val tweetUrl: String = "https://twitter.com/" + screenName + "/status/" + tweet.id
               toRedis(tweetUrl)
               Thread.sleep(1000)
@@ -58,8 +58,11 @@ object twitter {
     }
   }
 
-  def checkTweetTournament(tweet: String): Boolean = {
-    // 甲子園を含む文字のツイートは流さない
-    !tweet.contains("甲子園")
+  def checkTweetUser(screenName: String, tweet: String): Boolean = {
+    screenName match {
+      case "SplatoonJP" => !tweet.contains("甲子園")
+      case "astel4696" => tweet.contains("#Splatoon2 #スプラトゥーン2 #NintendoSwitch")
+      case _ => true
+    }
   }
 }

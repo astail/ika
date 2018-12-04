@@ -31,7 +31,8 @@ object Main {
     // 起動時に設定する
     timer.schedule(Time.now + 2.seconds) {
       gameSet
-      twitter.twitterRest(twitterUserName, 10)
+      // テスト用
+      // twitter.twitterRest(twitterUserName, 10)
     }
 
     // 1時間ごとに見にいって設定する
@@ -39,11 +40,12 @@ object Main {
       gameSet
     }
 
-
     // 15分ごとに見にいく
     timer.schedule(Time.now.ceil(1.hour), 15.minute) {
       logger.info("15分")
       twitter.twitterRest(twitterUserName, 10)
+      Thread.sleep(10000)
+      twitter.twitterRest("astel4696", 10)
     }
 
   }
