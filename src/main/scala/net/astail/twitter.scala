@@ -4,7 +4,7 @@ import com.danielasfregola.twitter4s.TwitterRestClient
 import net.astail.redis._
 import org.slf4j.{Logger, LoggerFactory}
 
-import scala.concurrent.Await
+import scala.concurrent.{Await, Future}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration.Duration
 import scala.util.{Failure, Success}
@@ -12,7 +12,7 @@ import scala.util.{Failure, Success}
 object twitter {
   val logger: Logger = LoggerFactory.getLogger(this.getClass)
 
-  def twitterRest(screenName: String, count: Int) = {
+  def twitterRest(screenName: String, count: Int): Future[Unit] = {
     val client = TwitterRestClient()
     val timeLine = client.userTimelineForUser(screenName, count = count)
 
@@ -20,10 +20,12 @@ object twitter {
       case Success(msg) => for (tweet <- msg.data.reverse) {
         tweet.retweeted_status match {
           case None => {
-            val tweetUrl: String = "https://twitter.com/" + screenName + "/status/" + tweet.id
-            toRedis(tweetUrl)
-            Thread.sleep(1000)
-            redisToDiscord(tweetUrl)
+            if (checkTweetTournament(tweet.text)) {
+              val tweetUrl: String = "https://twitter.com/" + screenName + "/status/" + tweet.id
+              toRedis(tweetUrl)
+              Thread.sleep(1000)
+              redisToDiscord(tweetUrl)
+            }
           }
           case Some(s) =>
         }
@@ -54,5 +56,10 @@ object twitter {
       }
       case None =>
     }
+  }
+
+  def checkTweetTournament(tweet: String): Boolean = {
+    // 甲子園を含む文字のツイートは流さない
+    !tweet.contains("甲子園")
   }
 }
