@@ -31,6 +31,7 @@ object discord {
       event.getMessage.getContentDisplay match {
         case e if e contains "バイト一覧" => {
 
+          event.getTextChannel.sendMessage("確認中").queue
           val now: Option[String] = ika.ika("new_coop", "now")
           val next: Option[String] = ika.ika("new_coop", "next")
 
