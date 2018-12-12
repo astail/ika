@@ -59,7 +59,7 @@ object coop {
 
     val newStageImage: String = mergeWeaponsAndMaps(stageImage, weaponsImage)
 
-    val newStageImageHttp: String = dirToHttp(newStageImage)
+    val newStageImageHttp: String = model.dirToHttp(newStageImage)
 
     (s"${kuma}\n時間: ${timeDisplay(sTime)} ~ ${timeDisplay(eTime)}\nステージ: ${stage}\n武器: ${weapons}\n${newStageImageHttp}")
   }
@@ -95,10 +95,5 @@ object coop {
     delImage(questionUrl.split('/').last, true)
 
     merge
-  }
-
-  def dirToHttp(name: String): String = {
-    val domain = ConfigFactory.load.getString("domain")
-    domain + "/" + name.split('/').last
   }
 }

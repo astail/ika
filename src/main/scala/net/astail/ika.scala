@@ -81,7 +81,8 @@ object ika {
           val resizeMaps: List[String] = mapImage.map(x => resize(x,640, Width))
           val marge = imageAppend(resizeMaps, Width)
           resizeMaps.map(x => delImage(x))
-          Some(s"${sTime} ~ ${eTime}, マップ: ${map}\n${marge}")
+          val margeHttp = model.dirToHttp(marge)
+          Some(s"${sTime} ~ ${eTime}, マップ: ${map}\n${margeHttp}")
         }
         case _ => None
       }
