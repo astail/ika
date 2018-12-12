@@ -47,7 +47,7 @@ object ika {
       case "new_coop" => Some(coop.coopEndImage(api, time))
       case "coop_check" => Some(coop.setCoop(api, time))
       case "coop_weapons_images" => Some(coop.coop_weapons_images(api, time))
-      case "area" | "scaffold" | "grampus" | "clams" => Some(schedule(api, battle2))
+      case "area" | "scaffold" | "grampus" | "clams" | "all_gachi" => Some(schedule(api, battle2))
       case _ => Some(normal(api, battle2, time2))
     }
   }
@@ -93,7 +93,20 @@ object ika {
 
   def allGachiSchedule(api: String): String = {
     val resultData1 = resultData2(api)
-    "TODO"
+
+    val gachiList: List[String] = resultData1.flatMap(x => {
+      val rule = x.rule
+      val map: String = x.maps.mkString(",")
+      val mapImage: List[String] = x.maps_ex.map(_.image)
+      val sTime = timeDisplay(x.start)
+      val eTime = timeDisplay(x.end)
+      val resizeMaps: List[String] = mapImage.map(x => resize(x, 640, Width))
+      val marge = imageAppend(resizeMaps, Width)
+      resizeMaps.map(x => delImage(x))
+      val margeHttp = model.dirToHttp(marge)
+      Some(s"${rule}: ${sTime} ~ ${eTime}, マップ: ${map}\n${margeHttp}")
+    })
+    gachiList.mkString("\n")
   }
 
 

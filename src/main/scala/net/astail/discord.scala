@@ -32,7 +32,6 @@ object discord {
         val message = event.getMessage.getContentDisplay
         message match {
           case e if e contains "バイト一覧" => {
-
             event.getTextChannel.sendMessage("確認中").queue
             val now: Option[String] = ika.ika("new_coop", "now")
             val next: Option[String] = ika.ika("new_coop", "next")
@@ -42,8 +41,9 @@ object discord {
             event.getTextChannel.sendMessage(next.getOrElse("エラー")).queue
           }
           case e if e contains "ガチ一覧" => {
-            val now = ika.ika("all_gachi", "now")
-            event.getTextChannel.sendMessage(now.getOrElse("1エラー")).queue
+            event.getTextChannel.sendMessage("確認中").queue
+            val allGachiResult = ika.ika("all_gachi", "now")
+            event.getTextChannel.sendMessage(allGachiResult.getOrElse("1エラー")).queue
           }
           case _ => {
 
