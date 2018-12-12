@@ -2,12 +2,12 @@ package net.astail
 
 import java.net.URL
 
+import net.astail.ImageMagickWrapper._
 import org.json4s.DefaultFormats
 import org.json4s.jackson.JsonMethods.parse
 import org.slf4j.{Logger, LoggerFactory}
 
 import scala.io.Source
-
 import net.astail.model.timeDisplay
 
 object ika {
@@ -75,9 +75,13 @@ object ika {
       x.rule match {
         case `gachiBattle2` => {
           val map: String = x.maps.mkString(",")
+          val mapImage: List[String] = x.maps_ex.map(_.image)
           val sTime = timeDisplay(x.start)
           val eTime = timeDisplay(x.end)
-          Some(s"${sTime} ~ ${eTime}, マップ: ${map}")
+          val resizeMaps: List[String] = mapImage.map(x => resize(x,640, Width))
+          val marge = imageAppend(resizeMaps, Width)
+          resizeMaps.map(x => delImage(x))
+          Some(s"${sTime} ~ ${eTime}, マップ: ${map}\n${marge}")
         }
         case _ => None
       }

@@ -64,8 +64,10 @@ object ImageMagickWrapper {
 
   def delImage(image: String, dir: Boolean = false) = {
 
-    val deleteData = if(!dir) image
-    else s"${DESTIMAGEDIR}/${image}"
+    val deleteData = {
+      if(dir) s"${DESTIMAGEDIR}/${image}"
+      else image
+    }
 
     try {
       Process(s"rm -f ${deleteData}").!
