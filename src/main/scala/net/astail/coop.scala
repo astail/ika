@@ -48,10 +48,14 @@ object coop {
     val weapons = resultDataCoop1.weapons.map(_.name).mkString(",")
     val sTime = resultDataCoop1.start
     val eTime = resultDataCoop1.end
-    val kuma = if (checkTime(sTime, eTime, timestamp))
-      "バイト募集中"
-    else
-      "シフトを確認してくれたまえ"
+    val kuma = if (checkTime(sTime, eTime, timestamp)) {
+      val endHour: Int = Hours.hoursBetween(timestamp, eTime.toDateTime).getHours()
+      s"@${endHour}時間 バイト募集中"
+    }
+    else {
+      val startHour: Int = Hours.hoursBetween(timestamp, sTime.toDateTime).getHours()
+      s"@${startHour}時間 シフトを確認してくれたまえ"
+    }
 
     val newStageImage: String = mergeWeaponsAndMaps(stageImage, weaponsImage)
 
