@@ -27,60 +27,63 @@ object discord {
 
   class MessageListener extends ListenerAdapter {
     override def onMessageReceived(event: MessageReceivedEvent): Unit = {
+      // 他botや自分自身のコメントに反応してしまうのを防ぐ
+      if (!event.getAuthor.isBot) {
+        val message = event.getMessage.getContentDisplay
+        message match {
+          case e if e contains "バイト一覧" => {
 
-      event.getMessage.getContentDisplay match {
-        case e if e contains "バイト一覧" => {
+            event.getTextChannel.sendMessage("確認中").queue
+            val now: Option[String] = ika.ika("new_coop", "now")
+            val next: Option[String] = ika.ika("new_coop", "next")
 
-          event.getTextChannel.sendMessage("確認中").queue
-          val now: Option[String] = ika.ika("new_coop", "now")
-          val next: Option[String] = ika.ika("new_coop", "next")
-
-          event.getTextChannel.sendMessage(now.getOrElse("エラー")).queue
-          Thread.sleep(1000)
-          event.getTextChannel.sendMessage(next.getOrElse("エラー")).queue
-        }
-        case e if e contains "ガチ一覧" => {
-          val now = ika.ika("all_gachi", "now")
-          event.getTextChannel.sendMessage(now.getOrElse("1エラー")).queue
-        }
-        case _ => {
-
-          val checkTime: Option[String] = event.getMessage.getContentDisplay match {
-            case e if e startsWith "今の" => Some("now")
-            case e if e startsWith "次の" => Some("next")
-            case _ => None
+            event.getTextChannel.sendMessage(now.getOrElse("エラー")).queue
+            Thread.sleep(1000)
+            event.getTextChannel.sendMessage(next.getOrElse("エラー")).queue
           }
-
-          val dictionary: Seq[(String, String)] = Seq(
-            "レギュラー" -> "regular",
-            "ガチ" -> "gachi",
-            "リーグ" -> "league",
-            "バイト" -> "new_coop",
-            "バイト確認" -> "coop_check",
-            "バイト武器" -> "coop_weapons_images",
-            "エリア" -> "area",
-            "ヤグラ" -> "scaffold",
-            "ホコ" -> "grampus",
-            "アサリ" -> "clams"
-          )
-
-          val checkBattle: Option[String] = dictionary.collectFirst {
-            case (keyword, result) if event.getMessage.getContentDisplay endsWith keyword => result
+          case e if e contains "ガチ一覧" => {
+            val now = ika.ika("all_gachi", "now")
+            event.getTextChannel.sendMessage(now.getOrElse("1エラー")).queue
           }
+          case _ => {
 
-          val strCheck: Option[(String, String)] = checkTime.flatMap(time => checkBattle.map(battle => (battle, time)))
-
-          val kekka: Option[String] = strCheck match {
-            case Some(x) => {
-              val (battle, time) = strCheck.get
-              ika.ika(battle, time)
+            val checkTime: Option[String] = message match {
+              case e if e startsWith "今の" => Some("now")
+              case e if e startsWith "次の" => Some("next")
+              case _ => None
             }
-            case _ => None
-          }
 
-          kekka match {
-            case Some(x) => event.getTextChannel.sendMessage(x).queue
-            case _ => None
+            val dictionary: Seq[(String, String)] = Seq(
+              "レギュラー" -> "regular",
+              "ガチ" -> "gachi",
+              "リーグ" -> "league",
+              "バイト" -> "new_coop",
+              "バイト確認" -> "coop_check",
+              "バイト武器" -> "coop_weapons_images",
+              "エリア" -> "area",
+              "ヤグラ" -> "scaffold",
+              "ホコ" -> "grampus",
+              "アサリ" -> "clams"
+            )
+
+            val checkBattle: Option[String] = dictionary.collectFirst {
+              case (keyword, result) if message endsWith keyword => result
+            }
+
+            val strCheck: Option[(String, String)] = checkTime.flatMap(time => checkBattle.map(battle => (battle, time)))
+
+            val kekka: Option[String] = strCheck match {
+              case Some(x) => {
+                val (battle, time) = strCheck.get
+                ika.ika(battle, time)
+              }
+              case _ => None
+            }
+
+            kekka match {
+              case Some(x) => event.getTextChannel.sendMessage(x).queue
+              case _ => None
+            }
           }
         }
       }
