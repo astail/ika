@@ -72,6 +72,14 @@ object discord {
 
             val strCheck: Option[(String, String)] = checkTime.flatMap(time => checkBattle.map(battle => (battle, time)))
 
+            strCheck match {
+              case Some(s) => s._1 match {
+                case "area" | "scaffold" | "grampus" | "clams" | "all_gachi" => event.getTextChannel.sendMessage("検索中").queue
+                case _ => None
+              }
+              case None =>
+            }
+
             val kekka: Option[String] = strCheck match {
               case Some(x) => {
                 val (battle, time) = strCheck.get
@@ -118,7 +126,7 @@ object discord {
     try {
       webhookCli.send(message)
     } catch {
-      case _ => logger.error(s"sendMessage error: $message")
+      case e: Throwable => logger.error(s"sendMessage error: $message")
     } finally {
       webhookCli.close()
     }
