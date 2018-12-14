@@ -29,9 +29,15 @@ object discord {
     override def onMessageReceived(event: MessageReceivedEvent): Unit = {
       // 他botや自分自身のコメントに反応してしまうのを防ぐ
       if (!event.getAuthor.isBot) {
+
+        def gachiToDiscord(buttle: String) = {
+          event.getTextChannel.sendMessage("確認中").queue
+          ika.gachiSchedule(buttle).map(x => event.getTextChannel.sendMessage(s"${x.rule}: ${x.time}, マップ: ${x.map}\n${x.url}").queue)
+        }
+
         val message = event.getMessage.getContentDisplay
         message match {
-          case e if e contains "バイト一覧" => {
+          case "バイト" => {
             event.getTextChannel.sendMessage("確認中").queue
             val now: Option[String] = ika.ika("new_coop", "now")
             val next: Option[String] = ika.ika("new_coop", "next")
@@ -40,13 +46,19 @@ object discord {
             Thread.sleep(1000)
             event.getTextChannel.sendMessage(next.getOrElse("エラー")).queue
           }
-          case e if e contains "ガチ一覧" => {
+          case "ガチ" => {
             event.getTextChannel.sendMessage("確認中").queue
             val allGachiResult = ika.allGachiSchedule
 
             allGachiResult.map(x => event.getTextChannel.sendMessage(
               s"${x.rule}: ${x.time}, マップ: ${x.map}\n${x.url}").queue)
           }
+
+          case "エリア" => gachiToDiscord("エリア")
+          case "ヤグラ" => gachiToDiscord("ヤグラ")
+          case "ホコ" => gachiToDiscord("ホコ")
+          case "アサリ" => gachiToDiscord("アサリ")
+
           case _ => {
 
             val checkTime: Option[String] = message match {
@@ -61,11 +73,7 @@ object discord {
               "リーグ" -> "league",
               "バイト" -> "new_coop",
               "バイト確認" -> "coop_check",
-              "バイト武器" -> "coop_weapons_images",
-              "エリア" -> "area",
-              "ヤグラ" -> "scaffold",
-              "ホコ" -> "grampus",
-              "アサリ" -> "clams"
+              "バイト武器" -> "coop_weapons_images"
             )
 
             val checkBattle: Option[String] = dictionary.collectFirst {
@@ -73,14 +81,6 @@ object discord {
             }
 
             val strCheck: Option[(String, String)] = checkTime.flatMap(time => checkBattle.map(battle => (battle, time)))
-
-            strCheck match {
-              case Some(s) => s._1 match {
-                case "area" | "scaffold" | "grampus" | "clams" => event.getTextChannel.sendMessage("検索中").queue
-                case _ => None
-              }
-              case None =>
-            }
 
             val kekka: Option[String] = strCheck match {
               case Some(x) => {
