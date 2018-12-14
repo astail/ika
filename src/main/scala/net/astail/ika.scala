@@ -12,17 +12,18 @@ import net.astail.model.timeDisplay
 
 object ika {
   val logger: Logger = LoggerFactory.getLogger(this.getClass)
+  val gachiSchedule = "https://spla2.yuu26.com/gachi/schedule"
+  val coopSchedule = "https://spla2.yuu26.com/coop/schedule"
 
   def ika(battle: String, time: String): Option[String] = {
     val api: String = battle match {
-      case "coop_check" | "coop_weapons_images" | "new_coop" => "https://spla2.yuu26.com/coop/schedule"
-      case "area" | "scaffold" | "grampus" | "clams" | "all_gachi" => "https://spla2.yuu26.com/gachi/schedule"
+      case "coop_check" | "coop_weapons_images" | "new_coop" => coopSchedule
+      case "area" | "scaffold" | "grampus" | "clams" => gachiSchedule
       case _ => s"https://spla2.yuu26.com/${battle}/${time}"
     }
 
     val battle2 = battle match {
       case "regular" => "レギュラー"
-      case "all_gachi" => "ガチ一覧"
       case "gachi" => "ガチ"
       case "league" => "リーグ"
       case "new_coop" => "バイト"
@@ -38,12 +39,10 @@ object ika {
     val time2 = time match {
       case "now" => "今"
       case "next" => "次"
-      case "all" => "全"
       case _ => "error"
     }
 
     battle match {
-      case "all_gachi" => Some(allGachiSchedule(api))
       case "new_coop" => Some(coop.coopEndImage(api, time))
       case "coop_check" => Some(coop.setCoop(api, time))
       case "coop_weapons_images" => Some(coop.coop_weapons_images(api, time))
@@ -78,7 +77,7 @@ object ika {
           val mapImage: List[String] = x.maps_ex.map(_.image)
           val sTime = timeDisplay(x.start)
           val eTime = timeDisplay(x.end)
-          val resizeMaps: List[String] = mapImage.map(x => resize(x,640, Width))
+          val resizeMaps: List[String] = mapImage.map(x => resize(x, 640, Width))
           val marge = imageAppend(resizeMaps, Width)
           resizeMaps.map(x => delImage(x))
           val margeHttp = model.dirToHttp(marge)
@@ -91,10 +90,11 @@ object ika {
     gachiList.mkString("\n")
   }
 
-  def allGachiSchedule(api: String): String = {
+  def allGachiSchedule: List[BattleData] = {
+    val api = gachiSchedule
     val resultData1 = resultData2(api)
 
-    val gachiList: List[String] = resultData1.flatMap(x => {
+    resultData1.flatMap(x => {
       val rule = x.rule
       val map: String = x.maps.mkString(",")
       val mapImage: List[String] = x.maps_ex.map(_.image)
@@ -104,9 +104,9 @@ object ika {
       val marge = imageAppend(resizeMaps, Width)
       resizeMaps.map(x => delImage(x))
       val margeHttp = model.dirToHttp(marge)
-      Some(s"${rule}: ${sTime} ~ ${eTime}, マップ: ${map}\n${margeHttp}")
+
+      Some(BattleData(rule, s"${sTime} ~ ${eTime}", map, margeHttp))
     })
-    gachiList.mkString("\n")
   }
 
 

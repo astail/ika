@@ -42,8 +42,10 @@ object discord {
           }
           case e if e contains "ガチ一覧" => {
             event.getTextChannel.sendMessage("確認中").queue
-            val allGachiResult = ika.ika("all_gachi", "now")
-            event.getTextChannel.sendMessage(allGachiResult.getOrElse("1エラー")).queue
+            val allGachiResult = ika.allGachiSchedule
+
+            allGachiResult.map(x => event.getTextChannel.sendMessage(
+              s"${x.rule}: ${x.time}, マップ: ${x.map}\n${x.url}").queue)
           }
           case _ => {
 
@@ -74,7 +76,7 @@ object discord {
 
             strCheck match {
               case Some(s) => s._1 match {
-                case "area" | "scaffold" | "grampus" | "clams" | "all_gachi" => event.getTextChannel.sendMessage("検索中").queue
+                case "area" | "scaffold" | "grampus" | "clams" => event.getTextChannel.sendMessage("検索中").queue
                 case _ => None
               }
               case None =>

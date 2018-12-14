@@ -14,3 +14,6 @@ case class Stage(image: String, name: String)
 
 case class ResultCoop(start: String, start_utc: String, start_t: Int, end: String, end_utc: String, end_t: Int,
   stage: Stage, weapons: List[Weapons])
+
+
+case class BattleData(rule: String, time: String, map: String, url: String)
