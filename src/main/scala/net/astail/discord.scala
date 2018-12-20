@@ -32,7 +32,8 @@ object discord {
 
         def gachiToDiscord(buttle: String) = {
           event.getTextChannel.sendMessage("確認中").queue
-          ika.gachiSchedule(buttle).map(x => event.getTextChannel.sendMessage(s"${x.rule}: ${x.time}, マップ: ${x.map}\n${x.url}").queue)
+          ika.gachiSchedule(buttle).map(x => event.getTextChannel.sendMessage(
+            s"${x.rule}: ${x.time}, マップ: ${x.map}\n${x.url}").queue)
         }
 
         val message = event.getMessage.getContentDisplay
@@ -46,18 +47,26 @@ object discord {
             Thread.sleep(1000)
             event.getTextChannel.sendMessage(next.getOrElse("エラー")).queue
           }
-          case "ガチ" => {
+          case "ガチ"|"ガチ一覧" => {
             event.getTextChannel.sendMessage("確認中").queue
-            val allGachiResult = ika.allGachiSchedule
+            val allGachiResult = ika.allSchedule("gachi")
 
             allGachiResult.map(x => event.getTextChannel.sendMessage(
               s"${x.rule}: ${x.time}, マップ: ${x.map}\n${x.url}").queue)
           }
 
-          case "エリア" => gachiToDiscord("エリア")
-          case "ヤグラ" => gachiToDiscord("ヤグラ")
-          case "ホコ" => gachiToDiscord("ホコ")
-          case "アサリ" => gachiToDiscord("アサリ")
+          case "ガチエリア"|"エリア"|"エリア一覧" => gachiToDiscord("エリア")
+          case "ガチヤグラ"|"ヤグラ"|"ヤグラ一覧" => gachiToDiscord("ヤグラ")
+          case "ガチホコ"|"ホコ"|"ガチホコバトル"|"ホコ一覧" => gachiToDiscord("ホコ")
+          case "ガチアサリ"|"アサリ"|"アサリ一覧" => gachiToDiscord("アサリ")
+
+          case "レギュラー"|"レギュラー一覧" => {
+            event.getTextChannel.sendMessage("確認中").queue
+            val allGachiResult = ika.allSchedule("regular")
+
+            allGachiResult.map(x => event.getTextChannel.sendMessage(
+              s"${x.rule}: ${x.time}, マップ: ${x.map}\n${x.url}").queue)
+          }
 
           case _ => {
 

@@ -14,6 +14,7 @@ object ika {
   val logger: Logger = LoggerFactory.getLogger(this.getClass)
   val gachiSchedule = "https://spla2.yuu26.com/gachi/schedule"
   val coopSchedule = "https://spla2.yuu26.com/coop/schedule"
+  val regularSchedule = "https://spla2.yuu26.com/regular/schedule"
 
   def ika(battle: String, time: String): Option[String] = {
     val api: String = battle match {
@@ -84,8 +85,10 @@ object ika {
     )
   }
 
-  def allGachiSchedule: List[BattleData] = {
-    val api = gachiSchedule
+  def allSchedule(r: String): List[BattleData] = {
+
+    val api = if(r == "gachi") gachiSchedule
+    else regularSchedule
     val resultData1 = resultData2(api)
 
     resultData1.flatMap(x => {
