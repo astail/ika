@@ -33,6 +33,7 @@ jobs:
       - run: sudo apt-get install libyaml-dev
       - run: sudo pip install ansible ansible-lint
       - run: ansible --version
+      - run: ansible-lint --version
       - run: cd ansible && echo "${ANSIBLE_VAULT_PASS}" > ansible_vault.txt
       - run: cd ansible && ansible-lint site.yml
       - run: cd ansible && ansible-playbook -i "localhost," site.yml --syntax-check --vault-password-file ansible_vault.txt
