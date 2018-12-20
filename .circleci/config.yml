@@ -31,7 +31,7 @@ jobs:
     steps:
       - checkout
       - run: sudo apt-get install libyaml-dev
-      - run: sudo pip install ansible ansible-lint
+      - run: sudo pip install ansible ansible-lint==3.4.23
       - run: ansible --version
       - run: ansible-lint --version
       - run: cd ansible && echo "${ANSIBLE_VAULT_PASS}" > ansible_vault.txt
