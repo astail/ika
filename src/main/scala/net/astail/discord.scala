@@ -40,8 +40,8 @@ object discord {
         message match {
           case "バイト" => {
             event.getTextChannel.sendMessage("確認中").queue
-            val now: Option[String] = ika.ika("new_coop", "now")
-            val next: Option[String] = ika.ika("new_coop", "next")
+            val now: Option[String] = ika.ika("coop", "now")
+            val next: Option[String] = ika.ika("coop", "next")
 
             event.getTextChannel.sendMessage(now.getOrElse("エラー")).queue
             Thread.sleep(1000)
@@ -81,7 +81,7 @@ object discord {
               "ガチ" -> "gachi",
               "ガチマ" -> "gachi",
               "リーグ" -> "league",
-              "バイト" -> "new_coop",
+              "バイト" -> "coop",
               "バイト確認" -> "coop_check"
             )
 
