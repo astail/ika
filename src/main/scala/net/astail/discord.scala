@@ -47,7 +47,7 @@ object discord {
             Thread.sleep(1000)
             event.getTextChannel.sendMessage(next.getOrElse("エラー")).queue
           }
-          case "ガチ"|"ガチ一覧" => {
+          case "ガチ"|"ガチ一覧"|"ガチマ" => {
             event.getTextChannel.sendMessage("確認中").queue
             val allGachiResult = ika.allSchedule("gachi")
 
@@ -79,6 +79,7 @@ object discord {
             val dictionary: Seq[(String, String)] = Seq(
               "レギュラー" -> "regular",
               "ガチ" -> "gachi",
+              "ガチマ" -> "gachi",
               "リーグ" -> "league",
               "バイト" -> "new_coop",
               "バイト確認" -> "coop_check",
