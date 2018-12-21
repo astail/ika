@@ -82,8 +82,7 @@ object discord {
               "ガチマ" -> "gachi",
               "リーグ" -> "league",
               "バイト" -> "new_coop",
-              "バイト確認" -> "coop_check",
-              "バイト武器" -> "coop_weapons_images"
+              "バイト確認" -> "coop_check"
             )
 
             val checkBattle: Option[String] = dictionary.collectFirst {

@@ -16,15 +16,6 @@ object coop {
     now.isAfter(sTime) && now.isBefore(eTime)
   }
 
-  def coop_weapons_images(api: String, time: String): String = {
-    val resultDataCoop1 = resultDataCoop(api, time)
-
-    val image = resultDataCoop1.weapons.map(_.image).mkString("\n")
-
-    (s"${image}")
-  }
-
-
   def resultDataCoop(api: String, time: String): ResultCoop = {
     val jsonObj = resultD(api)
 
