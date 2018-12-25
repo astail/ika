@@ -81,6 +81,7 @@ object discord {
               "ガチ" -> "gachi",
               "ガチマ" -> "gachi",
               "リーグ" -> "league",
+              "リグマ" -> "league",
               "バイト" -> "coop",
               "バイト確認" -> "coop_check"
             )
