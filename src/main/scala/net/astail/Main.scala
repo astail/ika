@@ -19,11 +19,27 @@ object Main {
     val timer = new JavaTimer
     val twitterUserName = ConfigFactory.load.getString("twitter_name")
 
-    def gameSet = {
-      val setGameStart = ika.ika("coop_check", "now")
+    def gachCheck(matchData: Option[String]): String = {
+      matchData match {
+        case Some(x) if (x contains "エリア") => "エ"
+        case Some(x) if (x contains "ホコ") => "ホ"
+        case Some(x) if (x contains "ヤグラ") => "ヤ"
+        case Some(x) if (x contains "アサリ") => "ア"
+        case _ => "error"
+      }
+    }
 
-      setGameStart match {
-        case Some(x) => discord.setGame(x.toString)
+    def gameSet = {
+      val setGameStartCoop = ika.ika("coop_check", "now")
+      val gachCheckNow: Option[String] = ika.ika("gachi", "now")
+      val gachCheckNext: Option[String] = ika.ika("gachi", "next")
+
+      val gachNow: String = gachCheck(gachCheckNow)
+      val gachNext: String = gachCheck(gachCheckNext)
+
+
+      setGameStartCoop match {
+        case Some(x) => discord.setGame(gachNow + " -> " + gachNext + " / " + x.toString)
         case _ => None
       }
     }
