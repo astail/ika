@@ -19,9 +19,9 @@ object Main {
     val timer = new JavaTimer
     val twitterUserName = ConfigFactory.load.getString("twitter_name")
 
-    def gachCheck(matchData: String): String = {
+    def gachCheck(matchData: String) = {
       val r = List("エリア", "ホコ", "ヤグラ", "アサリ")
-      r.collect { case i if matchData contains i => i }.head.head.toString
+      r.collectFirst { case i if matchData contains i => i }
     }
 
     def gameSet = {
@@ -31,9 +31,12 @@ object Main {
 
       (gachCheckNow, gachCheckNext, setGameStartCoop) match {
         case (Some(x), Some(y), Some(z)) =>
-          val gachNow: String = gachCheck(x)
-          val gachNext: String = gachCheck(y)
-          discord.setGame(gachNow + " -> " + gachNext + " / " + z.toString)
+          val gachNow: Option[String] = gachCheck(x)
+          val gachNext: Option[String] = gachCheck(y)
+          (gachNow, gachNext) match {
+            case (Some(now), Some(next)) => discord.setGame(gachNow.toString + " -> " + gachNext.toString + " / " + z.toString)
+            case _ => discord.setGame("setup error")
+          }
         case _ => discord.setGame("setup error")
       }
     }
