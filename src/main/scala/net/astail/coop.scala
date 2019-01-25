@@ -41,11 +41,11 @@ object coop {
     val eTime = resultDataCoop1.end
     val kuma = if (checkTime(sTime, eTime, timestamp)) {
       val endHour: Int = Hours.hoursBetween(timestamp, eTime.toDateTime).getHours()
-      s"@${endHour}時間 バイト募集中"
+      s"バイト募集中 @${endHour}時間"
     }
     else {
       val startHour: Int = Hours.hoursBetween(timestamp, sTime.toDateTime).getHours()
-      s"@${startHour}時間 シフトを確認してくれたまえ"
+      s"シフトを確認してくれたまえ @${startHour}時間"
     }
 
     val newStageImage: String = mergeWeaponsAndMaps(stageImage, weaponsImage)
@@ -63,11 +63,11 @@ object coop {
 
     if (checkTime(sTime, eTime, timestamp)) {
       val endHour: Int = Hours.hoursBetween(timestamp, eTime.toDateTime).getHours()
-      s"@${endHour}時間 バイト募集中"
+      s"バイト募 @${endHour}時間"
     }
     else {
       val startHour: Int = Hours.hoursBetween(timestamp, sTime.toDateTime).getHours()
-      s"@${startHour}時間 シフトを確認してくれたまえ"
+      s"シフト確 @${startHour}時間"
     }
   }
 

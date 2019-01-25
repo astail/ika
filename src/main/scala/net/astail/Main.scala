@@ -34,7 +34,7 @@ object Main {
           val gachNow: Option[String] = gachCheck(x)
           val gachNext: Option[String] = gachCheck(y)
           (gachNow, gachNext) match {
-            case (Some(now), Some(next)) => discord.setGame(gachNow.toString + " -> " + gachNext.toString + " / " + z.toString)
+            case (Some(now: String), Some(next: String)) => discord.setGame(now.head.toString + " -> " + next.head.toString + " / " + z.toString)
             case _ => discord.setGame("setup error")
           }
         case _ => discord.setGame("setup error")
