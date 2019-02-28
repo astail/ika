@@ -7,8 +7,13 @@ twitter4sConsumerSecret: "{{ vault_twitter4sConsumerSecret }}"
 twitter4sAccessToken: "{{ vault_twitter4sAccessToken }}"
 twitter4sCcessTokenSecret: "{{ vault_twitter4sCcessTokenSecret }}"
 
-TWITTERNAME: "{{ vault_TWITTERNAME }}"
+TWITTERNAME_IKA: "{{ vault_TWITTERNAME_IKA }}"
+TWITTERNAME_ASTEL: "{{ vault_TWITTERNAME_ASTEL }}"
 
 DISCORD_WEBHOOK: "{{ vault_DISCORD_WEBHOOK }}"
 
 DOMAIN: "{{ vault_DOMAIN }}"
+
+IKA_DB_URL: "{{ vault_IKA_DB_URL }}"
+IKA_DB_USER: "{{ vault_IKA_DB_USER }}"
+IKA_DB_PASS: "{{ vault_IKA_DB_PASS }}"

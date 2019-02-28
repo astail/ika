@@ -13,11 +13,14 @@ object Main {
 
     logger.info("================================= start ika =================================")
 
+    skinny.DBSettings.initialize()
     discord.MessageListener
 
 
     val timer = new JavaTimer
-    val twitterUserName = ConfigFactory.load.getString("twitter_name")
+    val twitterUserNameIka = ConfigFactory.load.getString("twitter_name_ika")
+    val twitterUserNameASTEL = ConfigFactory.load.getString("twitter_name_astel")
+
 
     def gachCheck(matchData: String) = {
       val r = List("エリア", "ホコ", "ヤグラ", "アサリ")
@@ -45,20 +48,21 @@ object Main {
     timer.schedule(Time.now + 2.seconds) {
       gameSet
       // テスト用
-      // twitter.twitterRest(twitterUserName, 10)
+      //twitter.twitterRest(twitterUserName, 10)
     }
 
     // 1時間ごとに見にいって設定する
     timer.schedule(Time.now.ceil(1.hour), 1.hour) {
+      Thread.sleep(30000)
       gameSet
     }
 
     // 15分ごとに見にいく
     timer.schedule(Time.now.ceil(1.hour), 15.minute) {
       logger.info("15分")
-      twitter.twitterRest(twitterUserName, 10)
+      twitter.twitterRest(twitterUserNameIka, 10)
       Thread.sleep(10000)
-      twitter.twitterRest("astel4696", 10)
+      twitter.twitterRest(twitterUserNameASTEL, 10)
     }
 
   }

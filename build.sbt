@@ -18,7 +18,9 @@ libraryDependencies ++= Seq(
   "ch.qos.logback" % "logback-classic" % "1.2.1",
   "org.slf4j" % "slf4j-api" % "1.7.12",
   "net.debasishg" %% "redisclient" % "3.8",
-  "com.danielasfregola" %% "twitter4s" % "5.5"
+  "com.danielasfregola" %% "twitter4s" % "5.5",
+  "org.skinny-framework" %% "skinny-orm" % "3.0.1",
+  "mysql" % "mysql-connector-java" % "8.0.13"
 )
 
 enablePlugins(JavaAppPackaging)
