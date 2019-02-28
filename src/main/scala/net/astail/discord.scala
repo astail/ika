@@ -29,30 +29,27 @@ object discord {
     override def onMessageReceived(event: MessageReceivedEvent): Unit = {
       // 他botや自分自身のコメントに反応してしまうのを防ぐ
       if (!event.getAuthor.isBot) {
+        def sendMessage(x: String) = event.getTextChannel.sendMessage(x).queue
 
         def gachiToDiscord(buttle: String) = {
-          event.getTextChannel.sendMessage("確認中").queue
-          ika.gachiSchedule(buttle).map(x => event.getTextChannel.sendMessage(
-            s"${x.rule}: ${x.time}, マップ: ${x.map}\n${x.url}").queue)
+          sendMessage("確認中")
+          ika.gachiSchedule(buttle).map(x => sendMessage(s"${x.rule}: ${x.time}, マップ: ${x.map}\n${x.url}"))
         }
-
         val message = event.getMessage.getContentDisplay
         message match {
           case "バイト" => {
-            event.getTextChannel.sendMessage("確認中").queue
+            sendMessage("確認中")
             val now: Option[String] = ika.ika("coop", "now")
             val next: Option[String] = ika.ika("coop", "next")
 
-            event.getTextChannel.sendMessage(now.getOrElse("エラー")).queue
+            sendMessage(now.getOrElse("エラー"))
             Thread.sleep(1000)
-            event.getTextChannel.sendMessage(next.getOrElse("エラー")).queue
+            sendMessage(next.getOrElse("エラー"))
           }
           case "ガチ"|"ガチ一覧"|"ガチマ" => {
-            event.getTextChannel.sendMessage("確認中").queue
+            sendMessage("確認中")
             val allGachiResult = ika.allSchedule("gachi")
-
-            allGachiResult.map(x => event.getTextChannel.sendMessage(
-              s"${x.rule}: ${x.time}, マップ: ${x.map}\n${x.url}").queue)
+            allGachiResult.map(x => sendMessage(s"${x.rule}: ${x.time}, マップ: ${x.map}\n${x.url}"))
           }
 
           case "ガチエリア"|"エリア"|"エリア一覧" => gachiToDiscord("エリア")
@@ -61,11 +58,10 @@ object discord {
           case "ガチアサリ"|"アサリ"|"アサリ一覧" => gachiToDiscord("アサリ")
 
           case "レギュラー"|"レギュラー一覧" => {
-            event.getTextChannel.sendMessage("確認中").queue
+            sendMessage("確認中")
             val allGachiResult = ika.allSchedule("regular")
 
-            allGachiResult.map(x => event.getTextChannel.sendMessage(
-              s"${x.rule}: ${x.time}, マップ: ${x.map}\n${x.url}").queue)
+            allGachiResult.map(x => sendMessage(s"${x.rule}: ${x.time}, マップ: ${x.map}\n${x.url}"))
           }
 
           case _ => {
@@ -101,7 +97,7 @@ object discord {
             }
 
             kekka match {
-              case Some(x) => event.getTextChannel.sendMessage(x).queue
+              case Some(x) => sendMessage(x)
               case _ => None
             }
           }
