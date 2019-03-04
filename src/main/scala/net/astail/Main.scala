@@ -48,7 +48,7 @@ object Main {
     timer.schedule(Time.now + 2.seconds) {
       gameSet
       // テスト用
-      //twitter.twitterRest(twitterUserName, 10)
+      //twitter.twitterRest(twitterUserNameIka, 10)
     }
 
     // 1時間ごとに見にいって設定する
@@ -64,6 +64,5 @@ object Main {
       Thread.sleep(10000)
       twitter.twitterRest(twitterUserNameASTEL, 10)
     }
-
   }
 }
