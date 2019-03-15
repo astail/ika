@@ -33,11 +33,12 @@ object discord {
 
         def gachiToDiscord(buttle: String) = {
           sendMessage("確認中")
-          ika.gachiSchedule(buttle).map(x => sendMessage(s"${x.rule}: ${x.time}, マップ: ${x.map}\n${x.url}"))
+          ika.gachiSchedule(buttle).foreach(x => sendMessage(s"${x.rule}: ${x.time}, マップ: ${x.map}\n${x.url}"))
         }
+
         val message = event.getMessage.getContentDisplay
         message match {
-          case "バイト" => {
+          case "バイト" =>
             sendMessage("確認中")
             val now: Option[String] = ika.ika("coop", "now")
             val next: Option[String] = ika.ika("coop", "next")
@@ -45,26 +46,24 @@ object discord {
             sendMessage(now.getOrElse("エラー"))
             Thread.sleep(1000)
             sendMessage(next.getOrElse("エラー"))
-          }
-          case "ガチ"|"ガチ一覧"|"ガチマ" => {
+
+          case "ガチ" | "ガチ一覧" | "ガチマ" =>
             sendMessage("確認中")
             val allGachiResult = ika.allSchedule("gachi")
-            allGachiResult.map(x => sendMessage(s"${x.rule}: ${x.time}, マップ: ${x.map}\n${x.url}"))
-          }
+            allGachiResult.foreach(x => sendMessage(s"${x.rule}: ${x.time}, マップ: ${x.map}\n${x.url}"))
 
-          case "ガチエリア"|"エリア"|"エリア一覧" => gachiToDiscord("エリア")
-          case "ガチヤグラ"|"ヤグラ"|"ヤグラ一覧" => gachiToDiscord("ヤグラ")
-          case "ガチホコ"|"ホコ"|"ガチホコバトル"|"ホコ一覧" => gachiToDiscord("ホコ")
-          case "ガチアサリ"|"アサリ"|"アサリ一覧" => gachiToDiscord("アサリ")
+          case "ガチエリア" | "エリア" | "エリア一覧" => gachiToDiscord("エリア")
+          case "ガチヤグラ" | "ヤグラ" | "ヤグラ一覧" => gachiToDiscord("ヤグラ")
+          case "ガチホコ" | "ホコ" | "ガチホコバトル" | "ホコ一覧" => gachiToDiscord("ホコ")
+          case "ガチアサリ" | "アサリ" | "アサリ一覧" => gachiToDiscord("アサリ")
 
-          case "レギュラー"|"レギュラー一覧" => {
+          case "レギュラー" | "レギュラー一覧" =>
             sendMessage("確認中")
             val allGachiResult = ika.allSchedule("regular")
 
-            allGachiResult.map(x => sendMessage(s"${x.rule}: ${x.time}, マップ: ${x.map}\n${x.url}"))
-          }
+            allGachiResult.foreach(x => sendMessage(s"${x.rule}: ${x.time}, マップ: ${x.map}\n${x.url}"))
 
-          case _ => {
+          case _ =>
 
             val checkTime: Option[String] = message match {
               case e if e startsWith "今の" => Some("now")
@@ -89,10 +88,9 @@ object discord {
             val strCheck: Option[(String, String)] = checkTime.flatMap(time => checkBattle.map(battle => (battle, time)))
 
             val kekka: Option[String] = strCheck match {
-              case Some(x) => {
+              case Some(x) =>
                 val (battle, time) = strCheck.get
                 ika.ika(battle, time)
-              }
               case _ => None
             }
 
@@ -100,7 +98,6 @@ object discord {
               case Some(x) => sendMessage(x)
               case _ => None
             }
-          }
         }
       }
     }

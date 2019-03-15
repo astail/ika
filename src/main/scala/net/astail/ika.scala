@@ -53,7 +53,7 @@ object ika {
     val sTime = timeDisplay(resultData1.start)
     val eTime = timeDisplay(resultData1.end)
 
-    (s"バトル: ${battle2}\n時間: ${time2}, ${sTime} ~ ${eTime}\nルール: ${rule}\nマップ: ${map}\n${mapImage}")
+    s"バトル: ${battle2}\n時間: ${time2}, ${sTime} ~ ${eTime}\nルール: ${rule}\nマップ: ${map}\n${mapImage}"
   }
 
   def gachiSchedule(battle: String): List[BattleData] = {

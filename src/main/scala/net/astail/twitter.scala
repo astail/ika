@@ -53,7 +53,7 @@ object twitter {
 
   def checkTweetUser(screenName: String, tweet: String): Boolean = {
     screenName match {
-      case "SplatoonJP" => ((!tweet.contains("甲子園") && !tweet.contains("代表")) || (tweet.contains("グッズ")))
+      case "SplatoonJP" => (!tweet.contains("甲子園") && !tweet.contains("代表")) || tweet.contains("グッズ")
       case "astel4696" => tweet.contains("#Splatoon2 #スプラトゥーン2 #NintendoSwitch")
     }
   }
