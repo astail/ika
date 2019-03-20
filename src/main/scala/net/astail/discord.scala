@@ -63,8 +63,8 @@ object discord {
 
             allGachiResult.foreach(x => sendMessage(s"${x.rule}: ${x.time}, マップ: ${x.map}\n${x.url}"))
 
-          case "武器" => sendMessage(randomWeapon.shuffleWepon)
-
+          case "武器" => randomWeapon.shuffleWeapon(4).map(x => x._1 + ", " + x._2)
+            
           case _ =>
 
             val checkTime: Option[String] = message match {
