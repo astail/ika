@@ -18,7 +18,8 @@ object randomWeapon {
     r.shuffle(weaponsList).take(n)
   }
 
-  def shuffleWeapon: (String, String) = {
-    r.shuffle(weaponsList).head
+  def shuffleWeapon: String = {
+    val headTuple = r.shuffle(weaponsList).head
+    headTuple._1 + ", " + headTuple._2
   }
 }
