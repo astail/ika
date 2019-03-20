@@ -63,7 +63,7 @@ object discord {
 
             allGachiResult.foreach(x => sendMessage(s"${x.rule}: ${x.time}, マップ: ${x.map}\n${x.url}"))
 
-          case "武器" => randomWeapon.shuffleWeapons(4).map(x => x._1 + ", " + x._2)
+          case "武器" => randomWeapon.shuffleWeapons(4).foreach(x => sendMessage(x._1 + ", " + x._2))
 
           case _ =>
 
