@@ -9,10 +9,17 @@ object randomWeapon {
   val url = ConfigFactory.load.getString("splatoon_weapon_url")
   val r = new Random
   val result = Jsoup.connect(url).get
-  val resultWeaponList = result.getElementsByClass("a-img").eachAttr("alt").asScala.toList
-  val weaponList = resultWeaponList.filterNot(_ contains "画像")
+  val resultWeaponsNameList = result.getElementsByClass("a-img").eachAttr("alt").asScala.toList
+  val resultWeaponsImageList = result.getElementsByClass("a-img").eachAttr("src").asScala.toList
+  val resultWeaponsList = resultWeaponsNameList zip resultWeaponsImageList
+  val weaponsList = resultWeaponsList.filterNot(_._1 contains "画像").filterNot(_._1 contains "レプリカ")
 
-  def shuffleWepon: String = {
-    r.shuffle(weaponList).head
+  def shuffleWeapons(n: Int): List[(String, String)] = {
+    r.shuffle(weaponsList).take(n)
+  }
+
+  def shuffleWeapon: String = {
+    val headTuple = r.shuffle(weaponsList).head
+    headTuple._1 + ", " + headTuple._2
   }
 }
