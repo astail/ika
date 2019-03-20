@@ -17,3 +17,5 @@ DOMAIN: "{{ vault_DOMAIN }}"
 IKA_DB_URL: "{{ vault_IKA_DB_URL }}"
 IKA_DB_USER: "{{ vault_IKA_DB_USER }}"
 IKA_DB_PASS: "{{ vault_IKA_DB_PASS }}"
+
+SPLATOON_WEAPON_URL: "{{ vault_SPLATOON_WEAPON_URL }}"
