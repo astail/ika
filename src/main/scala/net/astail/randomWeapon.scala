@@ -14,7 +14,11 @@ object randomWeapon {
   val resultWeaponsList = resultWeaponsNameList zip resultWeaponsImageList
   val weaponsList = resultWeaponsList.filterNot(_._1 contains "画像").filterNot(_._1 contains "レプリカ")
 
-  def shuffleWeapon(n: Int): List[(String, String)] = {
+  def shuffleWeapons(n: Int): List[(String, String)] = {
     r.shuffle(weaponsList).take(n)
+  }
+
+  def shuffleWeapon: (String, String) = {
+    r.shuffle(weaponsList).head
   }
 }
