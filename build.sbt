@@ -20,7 +20,8 @@ libraryDependencies ++= Seq(
   "net.debasishg" %% "redisclient" % "3.8",
   "com.danielasfregola" %% "twitter4s" % "5.5",
   "org.skinny-framework" %% "skinny-orm" % "3.0.1",
-  "mysql" % "mysql-connector-java" % "8.0.13"
+  "mysql" % "mysql-connector-java" % "8.0.13",
+  "org.jsoup" % "jsoup" % "1.11.2"
 )
 
 enablePlugins(JavaAppPackaging)
