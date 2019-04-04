@@ -52,7 +52,11 @@ object coop {
 
     val newStageImageHttp: String = model.dirToHttp(newStageImage)
 
-    (s"${kuma}\n時間: ${timeDisplay(sTime)} ~ ${timeDisplay(eTime)}\nステージ: ${stage}\n武器: ${weapons}\n${newStageImageHttp}")
+    s"""${kuma}
+       |時間: ${timeDisplay(sTime)} ~ ${timeDisplay(eTime)}
+       |ステージ: ${stage}
+       |武器: ${weapons}
+       |${newStageImageHttp}""".stripMargin
   }
 
   def setCoop(api: String, time: String): String = {
@@ -77,7 +81,7 @@ object coop {
     // ?だけ画像サイズが違うため揃える
     val questionUrl: String = "https://app.splatoon2.nintendo.net/images/coop_weapons/746f7e90bc151334f0bf0d2a1f0987e311b03736.png"
     val urlList = weapons.map(x =>
-      if(x == questionUrl) resize(x, 256, Width) else x)
+      if (x == questionUrl) resize(x, 256, Width) else x)
 
     val weaponsImage: String = imageAppend(urlList, Width)
     val resizeWeaponsImage: String = resize(weaponsImage, mapData.width, Width)
