@@ -3,7 +3,7 @@ package net.astail
 import com.typesafe.config.ConfigFactory
 import javax.security.auth.login.LoginException
 import net.dv8tion.jda.core.{AccountType, JDA, JDABuilder}
-import net.dv8tion.jda.core.entities.Game
+import net.dv8tion.jda.core.entities.{Game, Message}
 import net.dv8tion.jda.core.entities.Game.GameType
 import net.dv8tion.jda.core.events.{Event, ReadyEvent}
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent
@@ -124,11 +124,11 @@ object discord {
     }
   }
 
-  def sendMessage(message: String) = {
+  def sendMessage(message: String, roomWebhook: String = discordWebhook) = {
     import net.dv8tion.jda.webhook.WebhookClient
     import net.dv8tion.jda.webhook.WebhookClientBuilder
 
-    val webhook: WebhookClientBuilder = new WebhookClientBuilder(discordWebhook)
+    val webhook: WebhookClientBuilder = new WebhookClientBuilder(roomWebhook)
     val webhookCli: WebhookClient = webhook.build()
 
     try {
@@ -139,5 +139,4 @@ object discord {
       webhookCli.close()
     }
   }
-
 }

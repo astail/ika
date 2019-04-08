@@ -44,17 +44,34 @@ object Main {
       }
     }
 
+    def coopCheckSend = {
+      val nowCoop = ika.ika("coop", "now")
+      val nextCoop = ika.ika("coop", "next")
+      val discordWebhookCoop = ConfigFactory.load.getString("discord_webhook_coop")
+
+      val getKey = redis.getKey("ika").get
+      val resultKey = nowCoop.get.split("_").last
+
+      if (getKey != resultKey) {
+        redis.setKey("ika", resultKey)
+        discord.sendMessage(nowCoop.get + "\n" + nextCoop.get, discordWebhookCoop)
+      }
+    }
+
     // 起動時に設定する
     timer.schedule(Time.now + 2.seconds) {
       gameSet
+      coopCheckSend
       // テスト用
       //twitter.twitterRest(twitterUserNameIka, 10)
     }
+
 
     // 1時間ごとに見にいって設定する
     timer.schedule(Time.now.ceil(1.hour), 1.hour) {
       Thread.sleep(30000)
       gameSet
+      coopCheckSend
     }
 
     // 15分ごとに見にいく
