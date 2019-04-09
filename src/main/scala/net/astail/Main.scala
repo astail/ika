@@ -54,7 +54,7 @@ object Main {
 
       if (getKey != resultKey) {
         redis.setKey("ika", resultKey)
-        discord.sendMessage(nowCoop.get + "\n" + nextCoop.get, discordWebhookCoop)
+        discord.webhookSendMessage(nowCoop.get + "\n" + nextCoop.get, discordWebhookCoop)
       }
     }
 

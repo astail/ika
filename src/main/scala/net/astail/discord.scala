@@ -124,7 +124,7 @@ object discord {
     }
   }
 
-  def sendMessage(message: String, roomWebhook: String = discordWebhook) = {
+  def webhookSendMessage(message: String, roomWebhook: String = discordWebhook) = {
     import net.dv8tion.jda.webhook.WebhookClient
     import net.dv8tion.jda.webhook.WebhookClientBuilder
 

@@ -47,7 +47,7 @@ object twitter {
       case None =>
         TweetRdb.createTweet(tweetId, userName, tweet, tweetUrl, tweetAt)
         Thread.sleep(1000)
-        discord.sendMessage(tweetUrl)
+        discord.webhookSendMessage(tweetUrl)
     }
   }
 
