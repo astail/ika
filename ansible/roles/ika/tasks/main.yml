@@ -83,3 +83,4 @@
   systemd:
     name: ika
     state: started
+    enabled: yes
