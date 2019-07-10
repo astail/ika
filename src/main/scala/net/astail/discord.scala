@@ -29,7 +29,7 @@ object discord {
     override def onMessageReceived(event: MessageReceivedEvent): Unit = {
       // 他botや自分自身のコメントに反応してしまうのを防ぐ
       if (!event.getAuthor.isBot) {
-        def sendMessage(x: String) = event.getTextChannel.sendMessage(x).queue
+        def sendMessage(x: String) = event.getTextChannel.sendMessage(x).queue()
 
         def gachiToDiscord(buttle: String) = {
           sendMessage("確認中")
