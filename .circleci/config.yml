@@ -62,10 +62,10 @@ workflows:
     jobs:
       - build
       - ansible
-      - deploy:
-          requires:
-            - build
-            - ansible
-          filters:
-            branches:
-              only: master
+#      - deploy:
+#          requires:
+#            - build
+#            - ansible
+#          filters:
+#            branches:
+#              only: master
